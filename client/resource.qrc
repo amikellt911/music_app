@@ -1,2 +1,42 @@
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
+<RCC>
+    <qresource prefix="/">
+        <file>images/logo.png</file>
+        <file>images/max.png</file>
+        <file>images/min.png</file>
+        <file>images/quit.png</file>
+        <file>images/skin.png</file>
+        <file>images/background.png</file>
+        <file>images/addLike.png</file>
+        <file>images/download.png</file>
+        <file>images/list_play.png</file>
+        <file>images/lrcWord.png</file>
+        <file>images/order_play.png</file>
+        <file>images/play.png</file>
+        <file>images/playNext.png</file>
+        <file>images/playPrev.png</file>
+        <file>images/shuffle_play.png</file>
+        <file>images/single_play.png</file>
+        <file>images/volume.png</file>
+        <file>style/style.qss</file>
+        <file>images/like.png</file>
+        <file>images/local.png</file>
+        <file>images/rec.png</file>
+        <file>images/recent.png</file>
+        <file>images/p_like.png</file>
+        <file>images/p_local.png</file>
+        <file>images/p_rec.png</file>
+        <file>images/p_recent.png</file>
+        <file>images/rec/01.png</file>
+        <file>images/rec/02.png</file>
+        <file>images/rec/03.png</file>
+        <file>images/rec/04.png</file>
+        <file>images/rec/05.png</file>
+        <file>images/rec/06.png</file>
+        <file>images/rec/07.png</file>
+        <file>images/rec/08.png</file>
+        <file>images/rec/09.png</file>
+        <file>images/rec/10.png</file>
+        <file>images/rec/11.png</file>
+        <file>images/rec/12.png</file>
+    </qresource>
+</RCC>

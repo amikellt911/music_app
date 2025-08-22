@@ -71,3 +71,6 @@ Thumbs.db
 *.dll
 *.exe
 
+build/
+build-client-mingw_1310-Debug/
+.vscode/

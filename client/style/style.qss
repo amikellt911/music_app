@@ -1,0 +1,62 @@
+#download, #addLike, #play, #playMode, #playNext, #playPrev, #lrcWord, #volume,#skin,#min,#max,#quit
+{
+    /* 这部分是所有按钮共有的样式 */
+    background-color: transparent; /* 确保透明背景 */
+    background-repeat: no-repeat;
+    background-position: center center;
+    border: 2px solid transparent; /* 增加边框大小 */
+    border-radius: 5px; /* 增加圆角半径 */
+}
+
+#download:hover, #addLike:hover, #play:hover, #playMode:hover, #playNext:hover, #playPrev:hover, #lrcWord:hover, #volume:hover,#skin:hover,#min:hover,#quit:hover,#max:hover
+{
+    /* 使用边框或阴影来表示hover状态 */
+    border: 2px solid #4CAF50;
+    /* 或者使用阴影 */
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+
+/* --- 下面是每个按钮独立的背景图片 --- */
+
+#download
+{
+    background-image:url(":/images/download.png");
+}
+
+#addLike
+{
+    background-image:url(":/images/addLike.png");
+    /*background-position: -6px center;*/ 
+}
+
+#play
+{
+    background-image:url(":/images/play.png");
+}
+
+#playMode
+{
+    background-image:url(":/images/shuffle_play.png");
+}
+
+#playNext
+{
+    background-image:url(":/images/playNext.png");
+}
+
+#playPrev
+{
+    background-image:url(":/images/playPrev.png");
+}
+
+#lrcWord
+{
+    background-image:url(":/images/lrcWord.png");
+}
+
+#volume
+{
+    background-image:url(":/images/volume.png");
+}
+

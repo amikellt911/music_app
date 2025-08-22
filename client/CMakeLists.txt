@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+﻿cmake_minimum_required(VERSION 3.5)
 
 project(client LANGUAGES CXX)
 
@@ -32,6 +32,16 @@ if(ANDROID)
     client.cpp
     client.h
     client.ui
+    Resource.qrc
+    btform.cpp
+    btform.h
+    btform.ui
+    recbox.cpp
+    recbox.h
+    recbox.ui
+    recboxitem.cpp
+    recboxitem.h
+    recboxitem.ui
   )
 else()
   add_executable(client
@@ -39,6 +49,16 @@ else()
     client.cpp
     client.h
     client.ui
+    Resource.qrc
+    btform.cpp
+    btform.h
+    btform.ui
+    recbox.cpp
+    recbox.h
+    recbox.ui
+    recboxitem.cpp
+    recboxitem.h
+    recboxitem.ui
   )
 endif()
 
