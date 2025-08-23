@@ -63,7 +63,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QPushButton" name="btUp">
+       <widget class="QPushButton" name="btLeft">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -206,7 +206,7 @@ QPushButton:hover
        <number>0</number>
       </property>
       <item>
-       <widget class="QPushButton" name="btDown">
+       <widget class="QPushButton" name="btRight">
         <property name="minimumSize">
          <size>
           <width>0</width>
