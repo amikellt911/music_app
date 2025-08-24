@@ -17,11 +17,13 @@ void BtForm::setIconAndText(const QString &icon,const QString &text)
 {
     //设置图标
     ui->btIcon->setPixmap(QPixmap(icon));
+    //ui->btIcon->setScaledContents(true);
     ui->btText->setText(text);
 }
 void BtForm::setIcon(const QString &icon)
 {
     ui->btIcon->setPixmap(QPixmap(icon));
+    //ui->btIcon->setScaledContents(true);
 }
 void BtForm::mousePressEvent(QMouseEvent *event)
 {

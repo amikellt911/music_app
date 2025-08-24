@@ -570,7 +570,7 @@
                <string notr="true">background-color: rgb(247,249,252)</string>
               </property>
               <property name="currentIndex">
-               <number>0</number>
+               <number>1</number>
               </property>
               <widget class="QWidget" name="recPage">
                <widget class="QScrollArea" name="scrollArea">
@@ -693,51 +693,9 @@
                 </widget>
                </widget>
               </widget>
-              <widget class="QWidget" name="likePage">
-               <widget class="QLabel" name="label_3">
-                <property name="geometry">
-                 <rect>
-                  <x>210</x>
-                  <y>180</y>
-                  <width>72</width>
-                  <height>15</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string>page2</string>
-                </property>
-               </widget>
-              </widget>
-              <widget class="QWidget" name="localPage">
-               <widget class="QLabel" name="label_4">
-                <property name="geometry">
-                 <rect>
-                  <x>300</x>
-                  <y>180</y>
-                  <width>72</width>
-                  <height>15</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string>page3</string>
-                </property>
-               </widget>
-              </widget>
-              <widget class="QWidget" name="recentPage">
-               <widget class="QLabel" name="label_5">
-                <property name="geometry">
-                 <rect>
-                  <x>190</x>
-                  <y>160</y>
-                  <width>72</width>
-                  <height>15</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string>page4</string>
-                </property>
-               </widget>
-              </widget>
+              <widget class="CommonPage" name="likePage"/>
+              <widget class="CommonPage" name="localPage"/>
+              <widget class="CommonPage" name="recentPage"/>
              </widget>
             </item>
             <item>
@@ -1085,6 +1043,12 @@
    <class>RecBox</class>
    <extends>QWidget</extends>
    <header location="global">recbox.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CommonPage</class>
+   <extends>QWidget</extends>
+   <header location="global">commonpage.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

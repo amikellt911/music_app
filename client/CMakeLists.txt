@@ -42,6 +42,12 @@ if(ANDROID)
     recboxitem.cpp
     recboxitem.h
     recboxitem.ui
+    commonpage.cpp
+    commonpage.h
+    commonpage.ui
+    listitembox.cpp
+    listitembox.h
+    listitembox.ui
   )
 else()
   add_executable(client
@@ -59,6 +65,12 @@ else()
     recboxitem.cpp
     recboxitem.h
     recboxitem.ui
+    commonpage.cpp
+    commonpage.h
+    commonpage.ui
+    listitembox.cpp
+    listitembox.h
+    listitembox.ui
   )
 endif()
 

@@ -42,12 +42,17 @@ protected:
     void initImagesHash();
     //设置随机图片的轮播的键值对
     QJsonArray initRandomPicture();
+    //初始化推荐界面
+    void initRecUi();
+    //初始化共同页面
+    void initCommonPage();
 private slots:
     void on_quit_clicked();
     // 长按定时器槽函数
     void onLongPressTimeout();
     //处理点击btform槽函数
     void onBtFormClicked(int id);
+    
 
 private:
     Ui::client *ui;

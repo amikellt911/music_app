@@ -35,11 +35,8 @@ void client::initUi(){
     initBtForm();
     initConnect();
     //图片按照时间随机
-    srand(time(NULL));
-    ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->recMusicBox->initRecBoxUi(initRandomPicture(),1);
-    ui->supplyMusicBox->initRecBoxUi(initRandomPicture(),2);
-
+    initRecUi();
+    initCommonPage();
 }
 
 void client::mousePressEvent(QMouseEvent *event)
@@ -247,4 +244,19 @@ QJsonArray client::initRandomPicture()
         jsonArray.append(jsonObject);
     }
     return jsonArray;
+}
+
+void client::initRecUi()
+{
+    srand(time(NULL));
+    ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->recMusicBox->initRecBoxUi(initRandomPicture(),1);
+    ui->supplyMusicBox->initRecBoxUi(initRandomPicture(),2);
+}
+
+void client::initCommonPage()
+{
+    ui->likePage->setCommonPageUi("我喜欢的音乐",":/images/cover/02.png");
+    ui->localPage->setCommonPageUi("本地音乐",":/images/cover/03.png");
+    ui->recentPage->setCommonPageUi("最近播放",":/images/cover/04.png");
 }
