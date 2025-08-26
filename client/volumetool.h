@@ -14,10 +14,15 @@ class VolumeTool : public QWidget
 public:
     explicit VolumeTool(QWidget *parent = nullptr);
     ~VolumeTool();
+    void setVolumeRatio(int value);
+    void setOutSlider(int value);
 protected:
     void paintEvent(QPaintEvent *event) override;
+
 private:
     Ui::VolumeTool *ui;
+private:
+    void initSliderBtnShadow();
 };
 
 #endif // VOLUMETOOL_H

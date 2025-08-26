@@ -14,7 +14,7 @@ client::client(QWidget *parent)
 {
     ui->setupUi(this);
     // qDebug()<<"测试1";
-    volumeTool = new VolumeTool(this);
+    volumeTool = new VolumeTool(nullptr);
     volumeTool->hide();
     // qDebug()<<"测试2";
     initUi();
@@ -398,7 +398,7 @@ bool client::eventFilter(QObject *obj, QEvent *event)
 
         // 真实离开：你可以选择直接隐藏或启动延迟隐藏
         // 使用已有延迟隐藏
-        if (volumeHideTimer) volumeHideTimer->start(300);
+        if (volumeHideTimer) volumeHideTimer->start(500);
         return true;
     }
 }
@@ -417,7 +417,7 @@ bool client::eventFilter(QObject *obj, QEvent *event)
 
             if (!volumeGlobalRect.contains(globalPos))
             {
-                volumeHideTimer->start(200); // 200ms 延迟隐藏
+                volumeHideTimer->start(500); // 200ms 延迟隐藏
             }
             return true;
         }
@@ -540,7 +540,8 @@ void client::onVolumeControlShow()
     QPoint buttonPos = ui->volume->mapToGlobal(QPoint(0,0));
     QSize buttonSize = ui->volume->size();
     QSize toolSize = volumeTool->size();
-    int spacing = 15;
+    //如果变大的话，因为leave，会直接隐藏
+    int spacing = 0;
     QPoint toolPos(buttonPos.x() + (buttonSize.width() - toolSize.width())/2,
                    buttonPos.y() - toolSize.height() - spacing);
 
@@ -570,7 +571,7 @@ void client::initVolumeHideTimer()
     volumeHideTimer = new QTimer(this);
     // 设置单次触发
     volumeHideTimer->setSingleShot(true);
-    volumeHideTimer->setInterval(300);
+    volumeHideTimer->setInterval(500);
     connect(volumeHideTimer, &QTimer::timeout, this, &client::onVolumeControlHide);
 }
 void client::on_volume_toggled(bool checked)
@@ -578,12 +579,16 @@ void client::on_volume_toggled(bool checked)
     if (checked)
     {
         qDebug() << "测试点击1";
-        //ui->volume->setStyleSheet("background-image: url(:/images/volume.png);");
+        ui->volume->setStyleSheet("background-image: url(:/images/volume.png);");
+        volumeTool->setVolumeRatio(100);
+        volumeTool->setOutSlider(100);
     }
     else
     {
         qDebug() << "测试点击2";
-        //ui->volume->setStyleSheet("background-image: url(:/images/mute.png);");
+        ui->volume->setStyleSheet("background-image: url(:/images/mute.png);");
+        volumeTool->setVolumeRatio(0);
+        volumeTool->setOutSlider(0);
     }
 }
 

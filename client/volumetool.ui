@@ -14,10 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#VolumeTool{
-background-color:rgb(138, 255, 238);
- border-radius:5px;
-}</string>
+   <string notr="true">background-color:transparent;</string>
   </property>
   <widget class="QWidget" name="volumeWidget" native="true">
    <property name="geometry">
@@ -55,7 +52,7 @@ border-radius:5px
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">#oubSlider
+     <string notr="true">#outSlider
 {
 	background-color:rgb(252,60,79);
 	border-radius:5px
@@ -76,6 +73,7 @@ border-radius:5px
 {
 background-color:rgb(255, 255, 255);
  border-radius:10px;
+
 }</string>
     </property>
     <property name="text">

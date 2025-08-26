@@ -3,13 +3,16 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <math.h>
+#include <QDebug>
+#include <QGraphicsDropShadowEffect>
 VolumeTool::VolumeTool(QWidget *parent) 
     : QWidget(parent), ui(new Ui::VolumeTool)
 {
     ui->setupUi(this);
     
     // 设置窗口属性
-    setWindowFlags(Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint | Qt::Popup);
+    // setWindowFlags(Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint | Qt::Popup);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_ShowWithoutActivating);  // 显示时不激活窗口
     // 移除 QGraphicsDropShadowEffect，改用自定义绘制
@@ -22,6 +25,10 @@ VolumeTool::VolumeTool(QWidget *parent)
     // 为阴影预留空间
     int shadowMargin = 10;
     setContentsMargins(shadowMargin, shadowMargin, shadowMargin, shadowMargin);
+    // ui->outSlider->setAttribute(Qt::WA_TransparentForMouseEvents); // 不拦鼠标
+    // ui->outSlider->setAttribute(Qt::WA_TranslucentBackground);     // 背景透明
+    initSliderBtnShadow();
+
 }
 
 void VolumeTool::paintEvent(QPaintEvent *event)
@@ -74,4 +81,36 @@ void VolumeTool::paintEvent(QPaintEvent *event)
 VolumeTool::~VolumeTool()
 {
     delete ui;
+}
+
+void VolumeTool::setVolumeRatio(int value)
+{
+    ui->volumeRatio->setText(QString::number(value)+"%");
+}
+
+void VolumeTool::setOutSlider(int value)
+{
+    int fullHeight = ui->inSlider->height();
+    int h = value * 0.01 * fullHeight;
+    int y = ui->inSlider->y() + (fullHeight - h); // 让底部对齐
+    ui->outSlider->setGeometry(ui->inSlider->x(),
+                               y,
+                               ui->inSlider->width(),
+                               h);
+    ui->outSlider->raise(); // 确保在最上层
+    ui->sliderBtn->raise();//不然会被滑动条覆盖
+    // qDebug() << "inSlider h=" << ui->inSlider->height()
+    //      << " outSlider h=" << h
+    //      << " y=" << y;
+
+}
+
+void VolumeTool::initSliderBtnShadow()
+{
+    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect(this);
+    effect->setOffset(0, 0);          // 不偏移，居中
+    effect->setBlurRadius(8);         // 模糊程度
+    effect->setColor(QColor(0, 0, 0, 120)); // 半透明黑
+    ui->sliderBtn->setGraphicsEffect(effect);
+
 }
