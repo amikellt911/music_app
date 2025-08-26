@@ -16,8 +16,11 @@ client::client(QWidget *parent)
     , lastBtFormId(0)
 {
     ui->setupUi(this);
+    //qDebug()<<"测试1";
     volumeTool = new VolumeTool(this);
+    //qDebug()<<"测试2";
     initUi();
+    //qDebug()<<"测试3";
 
 
 }
@@ -272,21 +275,35 @@ bool client::eventFilter(QObject *obj, QEvent *event)
         {
             onVolumeControlShow();
         }
-        else if(event->type()==QEvent::Leave)
+        if(event->type()==QEvent::Leave)
         {
             onVolumeControlHide();
         }
     }
+    if(obj == volumeTool)
+    {
+        if(event->type()==QEvent::Leave)
+        {
+            onVolumeControlHide();
+        }
+    }
+    return QWidget::eventFilter(obj, event);
 }
 
 void client::initInstallEventFilter(){
     ui->volume->installEventFilter(this);
+    volumeTool->installEventFilter(this);
 }
 
 void client::onVolumeControlShow(){
-    qDebug()<<"测试进入";
+    //qDebug()<<"测试进入";
+    QPoint pos = ui->volume->mapToGlobal(QPoint(15,0));
+    QPoint leftTopVolume=pos-QPoint(volumeTool->width()/2,volumeTool->height());
+    volumeTool->move(leftTopVolume);
+    volumeTool->show();
 }
 
 void client::onVolumeControlHide(){
-    qDebug()<<"测试离开";
+    //qDebug()<<"测试离开";
+    volumeTool->hide();
 }
