@@ -9,6 +9,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include "volumetool.h"
+
 //class VolumeTool;
 QT_BEGIN_NAMESPACE
 namespace Ui { class client; }
@@ -56,6 +57,10 @@ protected:
     void onVolumeControlShow();
     //事件：音量控件隐藏
     void onVolumeControlHide();
+    //初始化音量隐藏定时器
+    void initVolumeHideTimer();
+    void paintEvent(QPaintEvent *event) override;
+    void initVolumeMonitor();
 private slots:
     void on_quit_clicked();
     // 长按定时器槽函数
@@ -63,6 +68,10 @@ private slots:
     //处理点击btform槽函数
     void onBtFormClicked(int id);
     
+
+    void on_volume_toggled(bool checked);
+
+    void checkCursorForHide();      // 轮询回调
 
 private:
     Ui::client *ui;
@@ -80,5 +89,13 @@ private:
     QHash<int, BtForm*> btForms;
     //音量设置
     VolumeTool *volumeTool;
+    //音量控件隐藏定时器
+    QTimer *volumeHideTimer;
+    //bool是否显示 ,直接用isVisible()替代
+    //bool volumeShow;
+    bool volumeToolVisible;
+    // bool isVolumeControlActive;  // 音量控制是否激活状态
+    // QTimer* volumeShowTimer;     // 延迟显示定时器
+    QTimer *volumeMonitorTimer;     // 新增：轮询鼠标位置的 timer
 };
 #endif // CLIENT_H

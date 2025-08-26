@@ -44,8 +44,7 @@ void RecBoxItem::setRecImage(const QString& imagePath)
 {
        QString style="background-image: url("+imagePath+");"
                      "background-repeat: no-repeat;"
-                     "background-position: center;"
-                     "background-size: cover;";
+                     "background-position: center;";
         ui->recMusicImage->setStyleSheet(style);
         //好像没起作用
         ui->recMusicImage->setScaledContents(true);

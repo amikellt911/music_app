@@ -8,14 +8,15 @@
     border-radius: 5px; /* 增加圆角半径 */
 }
 
-#download:hover, #addLike:hover, #play:hover, #playMode:hover, #playNext:hover, #playPrev:hover, #lrcWord:hover, #volume:hover,#skin:hover,#min:hover,#quit:hover,#max:hover
+#download:hover, #addLike:hover, #play:hover, #playMode:hover, #playNext:hover, #playPrev:hover, #lrcWord:hover, #skin:hover,#min:hover,#quit:hover,#max:hover
 {
     /* 使用边框或阴影来表示hover状态 */
     border: 2px solid #4CAF50;
     /* 或者使用阴影 */
-    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+    /* qss没有这个语法，这是css的 */
+    /* box-shadow: 0 0 10px rgba(76, 175, 80, 0.5); */
 }
-
+/* #volume:hover */
 
 /* --- 下面是每个按钮独立的背景图片 --- */
 
@@ -57,6 +58,6 @@
 
 #volume
 {
-    background-image:url(":/images/volume_none.png");
+    background-image:url(":/images/mute.png");
 }
 

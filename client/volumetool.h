@@ -14,7 +14,8 @@ class VolumeTool : public QWidget
 public:
     explicit VolumeTool(QWidget *parent = nullptr);
     ~VolumeTool();
-
+protected:
+    void paintEvent(QPaintEvent *event) override;
 private:
     Ui::VolumeTool *ui;
 };
