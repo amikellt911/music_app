@@ -578,12 +578,12 @@ void client::on_volume_toggled(bool checked)
     if (checked)
     {
         qDebug() << "测试点击1";
-        // ui->volume->setStyleSheet("background-image: url(:/images/volume.png);");
+        //ui->volume->setStyleSheet("background-image: url(:/images/volume.png);");
     }
     else
     {
         qDebug() << "测试点击2";
-        // ui->volume->setStyleSheet("background-image: url(:/images/mute.png);");
+        //ui->volume->setStyleSheet("background-image: url(:/images/mute.png);");
     }
 }
 

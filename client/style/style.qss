@@ -56,8 +56,11 @@
     background-image:url(":/images/lrcWord.png");
 }
 
-#volume
-{
-    background-image:url(":/images/mute.png");
+#volume {
+    background-image: url(:/images/mute.png);
+}
+
+#volume:checked {
+    background-image: url(:/images/volume.png);
 }
 
