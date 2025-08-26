@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QGraphicsDropShadowEffect>
 
+
 client::client(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::client)
@@ -15,6 +16,7 @@ client::client(QWidget *parent)
     , lastBtFormId(0)
 {
     ui->setupUi(this);
+    volumeTool = new VolumeTool(this);
     initUi();
 
 
@@ -37,6 +39,7 @@ void client::initUi(){
     //图片按照时间随机
     initRecUi();
     initCommonPage();
+    initInstallEventFilter();
 }
 
 void client::mousePressEvent(QMouseEvent *event)
@@ -259,4 +262,31 @@ void client::initCommonPage()
     ui->likePage->setCommonPageUi("我喜欢的音乐",":/images/cover/02.png");
     ui->localPage->setCommonPageUi("本地音乐",":/images/cover/03.png");
     ui->recentPage->setCommonPageUi("最近播放",":/images/cover/04.png");
+}
+
+bool client::eventFilter(QObject *obj, QEvent *event)
+{
+    if(obj == ui->volume)
+    {
+        if(event->type()==QEvent::Enter)
+        {
+            onVolumeControlShow();
+        }
+        else if(event->type()==QEvent::Leave)
+        {
+            onVolumeControlHide();
+        }
+    }
+}
+
+void client::initInstallEventFilter(){
+    ui->volume->installEventFilter(this);
+}
+
+void client::onVolumeControlShow(){
+    qDebug()<<"测试进入";
+}
+
+void client::onVolumeControlHide(){
+    qDebug()<<"测试离开";
 }

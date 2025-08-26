@@ -8,6 +8,8 @@
 #include "btform.h"
 #include <QJsonArray>
 #include <QJsonObject>
+#include "volumetool.h"
+//class VolumeTool;
 QT_BEGIN_NAMESPACE
 namespace Ui { class client; }
 QT_END_NAMESPACE
@@ -46,6 +48,14 @@ protected:
     void initRecUi();
     //初始化共同页面
     void initCommonPage();
+    //事件过滤器
+    bool eventFilter(QObject *obj, QEvent *event) override;
+    //安装事件过滤器
+    void initInstallEventFilter();
+    //事件：音量控件展示,因为音量btn位置锁定，所以不需要event形参
+    void onVolumeControlShow();
+    //事件：音量控件隐藏
+    void onVolumeControlHide();
 private slots:
     void on_quit_clicked();
     // 长按定时器槽函数
@@ -66,6 +76,9 @@ private:
     int lastBtFormId;
     //记录不同id的图片链接
     QHash<int, QString> imagesHash;
+    //切换不同界面
     QHash<int, BtForm*> btForms;
+    //音量设置
+    VolumeTool *volumeTool;
 };
 #endif // CLIENT_H

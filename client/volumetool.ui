@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>volumeTool</class>
+ <widget class="QWidget" name="volumeTool">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>80</width>
+    <height>280</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#volumeTool{
+background-color:#ffffff;
+ border-radius:5px;
+}</string>
+  </property>
+  <widget class="QWidget" name="volumeWidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>8</x>
+     <y>8</y>
+     <width>64</width>
+     <height>240</height>
+    </rect>
+   </property>
+   <widget class="QWidget" name="inSlider" native="true">
+    <property name="geometry">
+     <rect>
+      <x>25</x>
+      <y>20</y>
+      <width>14</width>
+      <height>204</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#inSlider
+{
+background-color:rgb(239,239,241);
+border-radius:5px
+}</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="outSlider" native="true">
+    <property name="geometry">
+     <rect>
+      <x>25</x>
+      <y>224</y>
+      <width>14</width>
+      <height>0</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#oubSlider
+{
+	background-color:rgb(252,60,79);
+	border-radius:5px
+}</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="sliderBtn">
+    <property name="geometry">
+     <rect>
+      <x>22</x>
+      <y>214</y>
+      <width>20</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#sliderBtn
+{
+background-color:rgb(255, 255, 255);
+ border-radius:10px;
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QLabel" name="volumeRatio">
+   <property name="geometry">
+    <rect>
+     <x>16</x>
+     <y>244</y>
+     <width>48</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>0%</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

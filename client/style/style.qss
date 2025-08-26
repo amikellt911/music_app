@@ -57,6 +57,6 @@
 
 #volume
 {
-    background-image:url(":/images/volume.png");
+    background-image:url(":/images/volume_none.png");
 }
 

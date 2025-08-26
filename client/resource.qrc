@@ -50,5 +50,6 @@
         <file>images/cover/02.png</file>
         <file>images/cover/03.png</file>
         <file>images/cover/04.png</file>
+        <file>images/volume_none.png</file>
     </qresource>
 </RCC>

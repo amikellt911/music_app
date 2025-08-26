@@ -181,8 +181,14 @@
        <widget class="QLabel" name="title">
         <property name="minimumSize">
          <size>
-          <width>430</width>
+          <width>400</width>
           <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>400</width>
+          <height>16777215</height>
          </size>
         </property>
         <property name="text">
@@ -198,6 +204,12 @@
           <height>0</height>
          </size>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="text">
          <string>歌手</string>
         </property>
@@ -207,8 +219,14 @@
        <widget class="QLabel" name="album">
         <property name="minimumSize">
          <size>
-          <width>200</width>
+          <width>250</width>
           <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>250</width>
+          <height>16777215</height>
          </size>
         </property>
         <property name="text">

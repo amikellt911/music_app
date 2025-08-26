@@ -48,6 +48,9 @@ if(ANDROID)
     listitembox.cpp
     listitembox.h
     listitembox.ui
+    volumetool.cpp
+    volumetool.h
+    volumetool.ui
   )
 else()
   add_executable(client
@@ -71,6 +74,9 @@ else()
     listitembox.cpp
     listitembox.h
     listitembox.ui
+    volumetool.cpp
+    volumetool.h
+    volumetool.ui
   )
 endif()
 
