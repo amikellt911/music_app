@@ -26,33 +26,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
-if(ANDROID)
-  add_library(client SHARED
-    main.cpp
-    client.cpp
-    client.h
-    client.ui
-    Resource.qrc
-    btform.cpp
-    btform.h
-    btform.ui
-    recbox.cpp
-    recbox.h
-    recbox.ui
-    recboxitem.cpp
-    recboxitem.h
-    recboxitem.ui
-    commonpage.cpp
-    commonpage.h
-    commonpage.ui
-    listitembox.cpp
-    listitembox.h
-    listitembox.ui
-    volumetool.cpp
-    volumetool.h
-    volumetool.ui
-  )
-else()
   add_executable(client
     main.cpp
     client.cpp
@@ -77,7 +50,11 @@ else()
     volumetool.cpp
     volumetool.h
     volumetool.ui
+    music.h
+    music.cpp
+    musiclist.h
+    musiclist.cpp
   )
-endif()
+
 
 target_link_libraries(client PRIVATE Qt5::Widgets)

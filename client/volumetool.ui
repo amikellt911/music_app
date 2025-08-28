@@ -6,9 +6,27 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>80</width>
-    <height>280</height>
+    <width>64</width>
+    <height>219</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>64</width>
+    <height>219</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>64</width>
+    <height>219</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -16,87 +34,125 @@
   <property name="styleSheet">
    <string notr="true">background-color:transparent;</string>
   </property>
-  <widget class="QWidget" name="volumeWidget" native="true">
-   <property name="geometry">
-    <rect>
-     <x>8</x>
-     <y>8</y>
-     <width>64</width>
-     <height>240</height>
-    </rect>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>6</number>
    </property>
-   <widget class="QWidget" name="inSlider" native="true">
-    <property name="geometry">
-     <rect>
-      <x>25</x>
-      <y>20</y>
-      <width>14</width>
-      <height>204</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#inSlider
+   <property name="sizeConstraint">
+    <enum>QLayout::SetFixedSize</enum>
+   </property>
+   <property name="leftMargin">
+    <number>8</number>
+   </property>
+   <property name="topMargin">
+    <number>8</number>
+   </property>
+   <property name="rightMargin">
+    <number>8</number>
+   </property>
+   <property name="bottomMargin">
+    <number>8</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="volumeWidget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>48</width>
+       <height>180</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>48</width>
+       <height>180</height>
+      </size>
+     </property>
+     <widget class="QWidget" name="inSlider" native="true">
+      <property name="geometry">
+       <rect>
+        <x>18</x>
+        <y>15</y>
+        <width>12</width>
+        <height>153</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#inSlider
 {
 background-color:rgb(239,239,241);
 border-radius:5px
 }</string>
-    </property>
-   </widget>
-   <widget class="QWidget" name="outSlider" native="true">
-    <property name="geometry">
-     <rect>
-      <x>25</x>
-      <y>224</y>
-      <width>14</width>
-      <height>0</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#outSlider
+      </property>
+     </widget>
+     <widget class="QWidget" name="outSlider" native="true">
+      <property name="geometry">
+       <rect>
+        <x>18</x>
+        <y>168</y>
+        <width>12</width>
+        <height>0</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#outSlider
 {
 	background-color:rgb(252,60,79);
 	border-radius:5px
 }</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="sliderBtn">
-    <property name="geometry">
-     <rect>
-      <x>22</x>
-      <y>214</y>
-      <width>20</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#sliderBtn
+      </property>
+     </widget>
+     <widget class="QPushButton" name="sliderBtn">
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>160</y>
+        <width>16</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#sliderBtn
 {
 background-color:rgb(255, 255, 255);
- border-radius:10px;
+ border-radius:8px;
 
 }</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QLabel" name="volumeRatio">
-   <property name="geometry">
-    <rect>
-     <x>16</x>
-     <y>244</y>
-     <width>48</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>0%</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="volumeRatio">
+     <property name="minimumSize">
+      <size>
+       <width>48</width>
+       <height>15</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>48</width>
+       <height>15</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>0%</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

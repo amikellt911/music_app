@@ -13,8 +13,9 @@ client::client(QWidget *parent)
     : QWidget(parent), ui(new Ui::client), m_dragging(false), m_longPress(false), m_longPressTimer(nullptr), lastBtFormId(0), volumeHideTimer(nullptr), volumeToolVisible(false)
 {
     ui->setupUi(this);
+    musicList = std::make_shared<MusicList>();
     // qDebug()<<"测试1";
-    volumeTool = new VolumeTool(nullptr);
+    volumeTool = new VolumeTool(this);
     volumeTool->hide();
     // qDebug()<<"测试2";
     initUi();
@@ -44,6 +45,11 @@ void client::initUi()
     ui->volume->setCheckable(true);
     // connect(ui->volume,&QPushButton::toggled,this,&client::on_volume_toggled);
     initVolumeMonitor();
+    ui->localPage->setAddLocalIcon(":/images/add_local.png");
+    ui->localPage->setAddLocalIconHover();
+    ui->likePage->setAddLocalIconUnused();
+    ui->recentPage->setAddLocalIconUnused();
+    ui->localPage->setMusicList(musicList);
 }
 
 void client::mousePressEvent(QMouseEvent *event)
@@ -547,7 +553,7 @@ void client::onVolumeControlShow()
 
     volumeTool->move(toolPos);
     volumeTool->show();
-    volumeTool->raise();
+    //volumeTool->raise();
     volumeToolVisible = true;
 
     // 启动轮询监控（作为最后的保障）
@@ -582,6 +588,7 @@ void client::on_volume_toggled(bool checked)
         ui->volume->setStyleSheet("background-image: url(:/images/volume.png);");
         volumeTool->setVolumeRatio(100);
         volumeTool->setOutSlider(100);
+        volumeTool->setSliderBtn(100);
     }
     else
     {
@@ -589,6 +596,7 @@ void client::on_volume_toggled(bool checked)
         ui->volume->setStyleSheet("background-image: url(:/images/mute.png);");
         volumeTool->setVolumeRatio(0);
         volumeTool->setOutSlider(0);
+        volumeTool->setSliderBtn(0);
     }
 }
 

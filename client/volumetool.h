@@ -16,6 +16,7 @@ public:
     ~VolumeTool();
     void setVolumeRatio(int value);
     void setOutSlider(int value);
+    void setSliderBtn(int value);
 protected:
     void paintEvent(QPaintEvent *event) override;
 

@@ -51,5 +51,6 @@
         <file>images/cover/03.png</file>
         <file>images/cover/04.png</file>
         <file>images/mute.png</file>
+        <file>images/add_local.png</file>
     </qresource>
 </RCC>

@@ -9,7 +9,8 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include "volumetool.h"
-
+#include "musiclist.h"
+#include <memory>
 //class VolumeTool;
 QT_BEGIN_NAMESPACE
 namespace Ui { class client; }
@@ -97,5 +98,7 @@ private:
     // bool isVolumeControlActive;  // 音量控制是否激活状态
     // QTimer* volumeShowTimer;     // 延迟显示定时器
     QTimer *volumeMonitorTimer;     // 新增：轮询鼠标位置的 timer
+    //音乐列表
+    std::shared_ptr<MusicList> musicList;
 };
 #endif // CLIENT_H

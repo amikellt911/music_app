@@ -1,6 +1,7 @@
-#include "commonpage.h"
+﻿#include "commonpage.h"
 #include "ui_commonpage.h"
 #include "listitembox.h"
+#include <QFileDialog>
 CommonPage::CommonPage(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CommonPage)
@@ -26,4 +27,38 @@ void CommonPage::setCommonPageUi(const QString &text, const QString &imagePath)
     QListWidgetItem *item = new QListWidgetItem(ui->musicList);
     item->setSizeHint(QSize(listItemBox->width(), listItemBox->height()));
     ui->musicList->setItemWidget(item, listItemBox);
+}
+
+void CommonPage::setAddLocalIcon(const QString &imagePath)
+{
+    ui->addLocalBtn->setIcon(QIcon(imagePath));
+    ui->addLocalBtn->setIconSize(QSize(ui->addLocalBtn->width(), ui->addLocalBtn->height()));
+}
+void CommonPage::on_addLocalBtn_clicked()
+{
+    QFileDialog *fileDialog = new QFileDialog(this);
+    fileDialog->setWindowTitle("添加本地音乐");
+    QDir dir=QDir::currentPath();
+    dir.cdUp();
+    QString path = dir.absolutePath();
+    fileDialog->setDirectory(dir);
+    fileDialog->setFileMode(QFileDialog::ExistingFiles);
+    fileDialog->setNameFilter(tr("Music Files(*.mp3 *.wav)"));
+    fileDialog->exec();
+}
+
+void CommonPage::setAddLocalIconUnused()
+{
+    ui->addLocalBtn->setEnabled(false);
+}
+
+void CommonPage::setAddLocalIconHover()
+{
+    ui->addLocalBtn->setStyleSheet("#addLocalBtn:hover{background-color: #1ecd97;border:none;border-radius: 5px;}"
+    "#addLocalBtn{ border:none;border-radius: 5px;}");
+}
+
+void CommonPage::setMusicList(const std::shared_ptr<MusicList>& musicList)
+{
+    m_musicList=musicList;
 }
