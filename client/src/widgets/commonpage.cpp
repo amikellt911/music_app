@@ -44,7 +44,9 @@ void CommonPage::on_addLocalBtn_clicked()
     fileDialog->setDirectory(dir);
     fileDialog->setFileMode(QFileDialog::ExistingFiles);
     fileDialog->setNameFilter(tr("Music Files(*.mp3 *.wav)"));
-    fileDialog->exec();
+    if(fileDialog->exec()==QDialog::Accepted){
+        m_musicList->addMusicByUrl(fileDialog->selectedUrls());
+    }
 }
 
 void CommonPage::setAddLocalIconUnused()

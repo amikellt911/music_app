@@ -24,37 +24,60 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #    endif()
 #endif()
 
+set(PROJECT_SOURCES
+  src/widgets/btform.cpp
+  src/widgets/client.cpp
+  src/widgets/commonpage.cpp
+  src/widgets/listitembox.cpp
+  src/widgets/recbox.cpp
+  src/widgets/recboxitem.cpp
+  src/widgets/volumetool.cpp
+  src/model/music.cpp
+  src/model/musiclist.cpp
+
+)
+set(PROJECT_HEADERS
+  src/widgets/btform.h
+  src/widgets/client.h
+  src/widgets/commonpage.h
+  src/widgets/listitembox.h
+  src/widgets/recbox.h
+  src/widgets/recboxitem.h
+  src/widgets/volumetool.h
+  src/model/music.h
+  src/model/musiclist.h
+)
+
+
+set(PROJECT_FORMS
+  src/ui/btform.ui
+  src/ui/client.ui
+  src/ui/commonpage.ui
+  src/ui/listitembox.ui
+  src/ui/recbox.ui
+  src/ui/recboxitem.ui
+  src/ui/volumetool.ui
+)
+set(PROJECT_RESOURCES
+    resources/Resource.qrc
+)
+
+
+set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/src/ui)
+
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
   add_executable(client
-    main.cpp
-    client.cpp
-    client.h
-    client.ui
-    Resource.qrc
-    btform.cpp
-    btform.h
-    btform.ui
-    recbox.cpp
-    recbox.h
-    recbox.ui
-    recboxitem.cpp
-    recboxitem.h
-    recboxitem.ui
-    commonpage.cpp
-    commonpage.h
-    commonpage.ui
-    listitembox.cpp
-    listitembox.h
-    listitembox.ui
-    volumetool.cpp
-    volumetool.h
-    volumetool.ui
-    music.h
-    music.cpp
-    musiclist.h
-    musiclist.cpp
+  main.cpp
+  ${PROJECT_SOURCES}
+  ${PROJECT_HEADERS}
+  ${PROJECT_FORMS}
+  ${PROJECT_RESOURCES}
   )
 
+  target_include_directories(client PRIVATE
+  "${PROJECT_SOURCE_DIR}/src/widgets"
+  "${PROJECT_SOURCE_DIR}/src/model"
+)
 
 target_link_libraries(client PRIVATE Qt5::Widgets)

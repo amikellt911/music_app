@@ -4,3 +4,8 @@ Music::Music()
 {
 
 }
+
+Music::Music(QUrl url)
+{
+    
+}

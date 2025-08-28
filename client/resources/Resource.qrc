@@ -1,4 +1,5 @@
 <RCC>
+    <!-- 之前是/，但是因为外面加了一层文件夹，所以就改成../ -->
     <qresource prefix="/">
         <file>images/logo.png</file>
         <file>images/max.png</file>
