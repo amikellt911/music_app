@@ -13,7 +13,8 @@ client::client(QWidget *parent)
     : QWidget(parent), ui(new Ui::client), m_dragging(false), m_longPress(false), m_longPressTimer(nullptr), lastBtFormId(0), volumeHideTimer(nullptr), volumeToolVisible(false)
 {
     ui->setupUi(this);
-    musicList = std::make_shared<MusicList>();
+    // 创建音乐列表对象（现在继承自QObject，需要传入parent）
+    musicList = std::make_shared<MusicList>(this);
     // qDebug()<<"测试1";
     volumeTool = new VolumeTool(this);
     volumeTool->hide();

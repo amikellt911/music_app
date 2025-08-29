@@ -6,7 +6,7 @@ class Music
 {
 public:
     Music();
-    Music(QUrl url);
+    Music(QUrl url, bool parseMetaData = true);  // 添加参数控制是否立即解析元数据
     //set方法
     void setMusicName(const QString &name);
     void setMusicAuthor(const QString &author);
