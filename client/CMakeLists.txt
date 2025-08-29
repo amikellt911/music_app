@@ -65,7 +65,7 @@ set(PROJECT_RESOURCES
 
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/src/ui)
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Widgets MULTIMEDIA REQUIRED)
 
   add_executable(client
   main.cpp
@@ -80,4 +80,4 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
   "${PROJECT_SOURCE_DIR}/src/model"
 )
 
-target_link_libraries(client PRIVATE Qt5::Widgets)
+target_link_libraries(client PRIVATE Qt5::Widgets Qt5::Multimedia)

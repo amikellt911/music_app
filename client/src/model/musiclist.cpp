@@ -17,6 +17,7 @@ void MusicList::addMusicByUrl(const QList<QUrl>& urls)
             qDebug() << "Audio file:" << url.toLocalFile();
         } else {
             qDebug() << "Not an audio file:" << url.toLocalFile();
+            continue;
         }
         Music music(url);
         musicList.push_back(music);

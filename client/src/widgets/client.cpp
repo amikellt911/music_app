@@ -50,6 +50,8 @@ void client::initUi()
     ui->likePage->setAddLocalIconUnused();
     ui->recentPage->setAddLocalIconUnused();
     ui->localPage->setMusicList(musicList);
+    ui->likePage->setMusicList(musicList);
+    ui->recentPage->setMusicList(musicList);
 }
 
 void client::mousePressEvent(QMouseEvent *event)

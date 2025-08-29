@@ -43,7 +43,8 @@ void CommonPage::on_addLocalBtn_clicked()
     QString path = dir.absolutePath();
     fileDialog->setDirectory(dir);
     fileDialog->setFileMode(QFileDialog::ExistingFiles);
-    fileDialog->setNameFilter(tr("Music Files(*.mp3 *.wav)"));
+    fileDialog->setNameFilter(tr("Music Files(*.mp3 *.wav *.flac)"));
+    //fileDialog->setMimeTypeFilters();
     if(fileDialog->exec()==QDialog::Accepted){
         m_musicList->addMusicByUrl(fileDialog->selectedUrls());
     }
