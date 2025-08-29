@@ -6,6 +6,7 @@
 #include "music.h"
 #include <QUrl>
 #include <QList>
+#include <QHash>
 
 /**
  * @brief 音乐列表管理类
@@ -42,12 +43,15 @@ public:
      */
     bool isEmpty() const;
 
+    void updateMusicListLikes(const QString& id, bool like);
 signals:
     /**
      * @brief 音乐列表更新信号
      * 当音乐列表发生变化时发出此信号
      */
     void musicListUpdated();
+
+    void musicListLikeUpdated(const QString& id, bool like);
 
 private:
     QVector<Music> musicList;

@@ -24,6 +24,7 @@ CommonPage::CommonPage(QWidget *parent) :
     // 初始化成员容器（确保它们被正确初始化）
     m_musicListItems.clear();
     m_listItemBoxes.clear();
+    
 }
 
 CommonPage::~CommonPage()
@@ -50,8 +51,10 @@ void CommonPage::on_addLocalBtn_clicked()
     QFileDialog *fileDialog = new QFileDialog(this);
     fileDialog->setWindowTitle("添加本地音乐");
     QDir dir=QDir::currentPath();
-    //dir.cdUp();
+    dir.cdUp();
     QString path = dir.absolutePath();
+    path+="/client/resources/music/";
+    dir.cd(path);
     fileDialog->setDirectory(dir);
     fileDialog->setFileMode(QFileDialog::ExistingFiles);
     fileDialog->setNameFilter(tr("Music Files(*.mp3 *.wav *.flac)"));
@@ -110,7 +113,7 @@ void CommonPage::updateMusicListDisplay()
             music.getMusicDuration(),
             music.getMusicLike()
         );
-
+        listItemBox->setId(music.getMusicId());
         // 创建QListWidgetItem并设置为适当的大小
         QListWidgetItem *item = new QListWidgetItem(ui->musicList);
         // 设置ListItemBox的固定高度（与ListItemBox的高度匹配）
@@ -118,7 +121,13 @@ void CommonPage::updateMusicListDisplay()
 
         // 将ListItemBox设置为QListWidgetItem的widget
         ui->musicList->setItemWidget(item, listItemBox);
-
+        connect(listItemBox, &ListItemBox::likeBtnClicked, this,[this, listItemBox](){
+            QString id=listItemBox->getId();
+            //m_musicList->musicMap[id]=
+            if(m_musicList)
+            m_musicList->updateMusicListLikes(id,listItemBox->getIsLike());
+        },Qt::UniqueConnection); 
+ 
         // 存储引用以便清理
         m_musicListItems.append(item);
         m_listItemBoxes.append(listItemBox);
@@ -189,5 +198,41 @@ void CommonPage::setMusicList(const std::shared_ptr<MusicList>& musicList)
 
         // // 初始化显示当前音乐列表
         // updateMusicListDisplay();
+    }
+    connectMusicListSignals();
+}
+
+void CommonPage::connectMusicListSignals()
+{
+    if (m_musicList) {
+        // 连接全局音乐列表的信号到当前页面的槽函数
+        connect(m_musicList.get(), &MusicList::musicListLikeUpdated,
+                this, &CommonPage::onMusicLikeUpdated, Qt::UniqueConnection);
+    }
+}
+
+void CommonPage::onMusicLikeUpdated(const QString& musicId, bool isLiked)
+{
+    qDebug() << "[DEBUG] onMusicLikeUpdated called - musicId:" << musicId 
+             << "isLiked:" << isLiked << "this:" << this;
+    
+    // 遍历当前页面的所有ListItemBox，找到对应的音乐项并更新
+    for (int i = 0; i < ui->musicList->count(); ++i) {
+        QListWidgetItem *item = ui->musicList->item(i);
+        if (!item) continue;
+        
+        ListItemBox *listItemBox = qobject_cast<ListItemBox*>(
+            ui->musicList->itemWidget(item));
+        
+        if (listItemBox && listItemBox->getId() == musicId) {
+            // 找到对应的音乐项，更新其点赞状态
+            // 注意：这里需要临时阻断信号，避免循环触发
+            bool oldState = listItemBox->blockSignals(true);
+            listItemBox->setLikeState(isLiked);  // 您需要在ListItemBox中实现这个方法
+            listItemBox->blockSignals(oldState);
+            
+            qDebug() << "[DEBUG] Updated ListItemBox like state for ID:" << musicId;
+            break;  // 找到了就退出循环
+        }
     }
 }

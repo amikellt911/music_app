@@ -1,4 +1,4 @@
-#ifndef LISTITEMBOX_H
+﻿#ifndef LISTITEMBOX_H
 #define LISTITEMBOX_H
 
 #include <QWidget>
@@ -31,14 +31,25 @@ public:
      * @param selected 是否选中
      */
     void setSelected(bool selected);
-
-    void enterEvent(QEvent *event) override;
-    void leaveEvent(QEvent *event) override;
+    void setId(const QString &id);
+    QString getId() const;
+    bool getIsLike() const;
+    // void enterEvent(QEvent *event) override;
+    // void leaveEvent(QEvent *event) override;
+    void setLikeState(bool isLiked);  // 设置点赞状态而不触发信号
 protected:
     void paintEvent(QPaintEvent *event) override;
 
+private slots:
+    void on_likeBtn_clicked();
+
+signals:
+    void likeBtnClicked(bool m_isLike);
+
 private:
     Ui::ListItemBox *ui;
+    bool m_isLike;
+    QString m_id;
 };
 
 #endif // LISTITEMBOX_H

@@ -25,6 +25,7 @@ public:
     void setAddLocalIconUnused();
     void setAddLocalIconHover();
     void setMusicList(const std::shared_ptr<MusicList>& musicList);
+    void connectMusicListSignals();
 
 private slots:
     void on_addLocalBtn_clicked();
@@ -34,6 +35,11 @@ private slots:
      * 清空当前列表并重新显示所有音乐项
      */
     void onMusicListUpdated();
+
+    void onMusicLikeUpdated(const QString& musicId, bool isLiked);
+
+signals:
+    //void updateMusicListLikes();
 
 private:
     /**
@@ -54,6 +60,7 @@ private:
     // 存储当前显示的音乐项控件，用于清理时释放
     QList<QListWidgetItem*> m_musicListItems;
     QList<ListItemBox*> m_listItemBoxes;
+    
 };
 
 #endif // COMMONPAGE_H

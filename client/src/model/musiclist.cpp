@@ -47,3 +47,14 @@ bool MusicList::isEmpty() const
 {
     return musicList.isEmpty();
 }
+
+void MusicList::updateMusicListLikes(const QString& id,bool like)
+{
+    for (auto& music : musicList) {
+        if (music.getMusicId() == id) {
+            music.setMusicLike(like);
+            emit musicListLikeUpdated(id,like);
+            break;
+        }
+    }
+}

@@ -192,7 +192,7 @@
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>5</number>
+       <number>10</number>
       </property>
       <property name="topMargin">
        <number>0</number>
@@ -205,15 +205,21 @@
       </property>
       <item>
        <widget class="QLabel" name="title">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
-          <width>400</width>
+          <width>345</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>400</width>
+          <width>345</width>
           <height>16777215</height>
          </size>
         </property>
@@ -224,15 +230,21 @@
       </item>
       <item>
        <widget class="QLabel" name="singer">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
-          <width>150</width>
+          <width>145</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>150</width>
+          <width>145</width>
           <height>16777215</height>
          </size>
         </property>
@@ -243,6 +255,12 @@
       </item>
       <item>
        <widget class="QLabel" name="album">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>250</width>
@@ -264,7 +282,37 @@
     </widget>
    </item>
    <item>
-    <widget class="QListWidget" name="musicList"/>
+    <widget class="QListWidget" name="musicList">
+     <property name="styleSheet">
+      <string notr="true">#musicList::item:selected
+{
+	background-color:#ffffff;
+	border:none;
+}
+#musicList::item:hover
+{
+	background-color:#ffffff;
+}
+#musicList::item
+{
+	background-color:rgb(247,249,252);
+}
+QScrollBar:vertical
+{
+	border:none;
+	width:15px;
+	background-color:rgb(247,249,252);
+	margin:0px 0px 0px 0px;
+}
+QScrollBar::handle:vertical
+{
+	width:15px;
+	border-radius:5px;
+	background-color:rgb(225,228,233);
+	min-height:20px;
+}</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
