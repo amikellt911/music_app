@@ -62,7 +62,76 @@ protected:
     void initVolumeHideTimer();
     void paintEvent(QPaintEvent *event) override;
     void initVolumeMonitor();
-private slots:
+
+    // ===== 窗口绘制相关私有方法 =====
+    /**
+     * @brief 初始化阴影绘制所需的参数
+     * @param shadowBlur [out] 阴影模糊半径
+     * @param shadowOffset [out] 阴影偏移距离
+     * @param cornerRadius [out] 圆角半径
+     * @param shadowColor [out] 阴影颜色
+     */
+    void setupShadowParameters(int &shadowBlur, int &shadowOffset, int &cornerRadius, QColor &shadowColor);
+
+    /**
+     * @brief 计算绘制区域
+     * @param shadowBlur 阴影模糊半径
+     * @param shadowOffset 阴影偏移距离
+     * @param widgetRect 整个窗口的矩形区域
+     * @param contentRect [out] 主窗口内容区域
+     * @param shadowRect [out] 阴影区域
+     */
+    void calculateDrawAreas(int shadowBlur, int shadowOffset, const QRect &widgetRect, QRect &contentRect, QRect &shadowRect);
+
+    /**
+     * @brief 绘制阴影效果
+     * @param painter 绘制器对象
+     * @param shadowRect 阴影区域
+     * @param cornerRadius 圆角半径
+     * @param shadowColor 阴影颜色
+     * @param shadowBlur 阴影模糊半径
+     */
+    void drawShadowEffect(QPainter &painter, const QRect &shadowRect, int cornerRadius, const QColor &shadowColor, int shadowBlur);
+
+    /**
+     * @brief 绘制主窗口背景
+     * @param painter 绘制器对象
+     * @param contentRect 主窗口内容区域
+     * @param cornerRadius 圆角半径
+     */
+    void drawWindowBackground(QPainter &painter, const QRect &contentRect, int cornerRadius);
+
+    /**
+     * @brief 绘制窗口边框
+     * @param painter 绘制器对象
+     * @param contentRect 主窗口内容区域
+     * @param cornerRadius 圆角半径
+     */
+    void drawWindowBorder(QPainter &painter, const QRect &contentRect, int cornerRadius);
+
+    // ===== 事件过滤器相关私有方法 =====
+    /**
+     * @brief 处理音量按钮的事件
+     * @param obj 事件对象
+     * @param event 事件类型
+     * @return 是否处理了事件
+     */
+    bool handleVolumeButtonEvents(QObject *obj, QEvent *event);
+
+    /**
+     * @brief 处理音量工具的事件
+     * @param obj 事件对象
+     * @param event 事件类型
+     * @return 是否处理了事件
+     */
+    bool handleVolumeToolEvents(QObject *obj, QEvent *event);
+
+    /**
+     * @brief 调试打印鼠标位置信息
+     * 打印当前鼠标位置和相关控件的调试信息
+     */
+    void printDebugCursorInfo();
+ private slots:
     void on_quit_clicked();
     // 长按定时器槽函数
     void onLongPressTimeout();
