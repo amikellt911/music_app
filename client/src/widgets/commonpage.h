@@ -11,12 +11,18 @@ class ListItemBox;
 namespace Ui {
 class CommonPage;
 }
-
+enum class PageType {
+        like,
+        local,
+        recent
+};
 class CommonPage : public QWidget
 {
     Q_OBJECT
 
 public:
+
+
     explicit CommonPage(QWidget *parent = nullptr);
     ~CommonPage();
 
@@ -26,6 +32,8 @@ public:
     void setAddLocalIconHover();
     void setMusicList(const std::shared_ptr<MusicList>& musicList);
     void connectMusicListSignals();
+    void setPageType(PageType type);
+    PageType getPageType() const;
 
 private slots:
     void on_addLocalBtn_clicked();
@@ -53,6 +61,12 @@ private:
      * 释放之前创建的所有ListItemBox控件和对应的QListWidgetItem
      */
     void clearMusicListDisplay();
+    /**
+     * @brief 添加音乐项到喜欢列表
+     * @param musicId 音乐项的ID
+     */
+    void addMusicItemToLikeList(const QString& musicId);
+    void removeMusicItemFromLikeList(const QString& musicId);
 
     Ui::CommonPage *ui;
     std::shared_ptr<MusicList> m_musicList;
@@ -60,6 +74,7 @@ private:
     // 存储当前显示的音乐项控件，用于清理时释放
     QList<QListWidgetItem*> m_musicListItems;
     QList<ListItemBox*> m_listItemBoxes;
+    PageType m_pageType;
     
 };
 

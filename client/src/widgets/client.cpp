@@ -517,6 +517,9 @@ void client::initCommonPage()
     ui->likePage->setCommonPageUi("我喜欢的音乐", ":/images/cover/02.png");
     ui->localPage->setCommonPageUi("本地音乐", ":/images/cover/03.png");
     ui->recentPage->setCommonPageUi("最近播放", ":/images/cover/04.png");
+    ui->likePage->setPageType(PageType::like);
+    ui->localPage->setPageType(PageType::local);
+    ui->recentPage->setPageType(PageType::recent);
 }
 /**
  * @brief 重构后的事件过滤器函数

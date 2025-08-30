@@ -300,13 +300,13 @@
 QScrollBar:vertical
 {
 	border:none;
-	width:15px;
+	width:10px;
 	background-color:rgb(247,249,252);
 	margin:0px 0px 0px 0px;
 }
 QScrollBar::handle:vertical
 {
-	width:15px;
+	width:10px;
 	border-radius:5px;
 	background-color:rgb(225,228,233);
 	min-height:20px;
