@@ -58,3 +58,33 @@ void MusicList::updateMusicListLikes(const QString& id,bool like)
         }
     }
 }
+
+QUrl MusicList::getMusicUrlById(const QString& id) const
+{
+    for (const auto& music : musicList) {
+        if (music.getMusicId() == id) {
+            return music.getMusicUrl();
+        }
+    }
+    return QUrl();
+}
+
+Music MusicList::getMusicById(const QString& id) const
+{
+    for (const auto& music : musicList) {
+        if (music.getMusicId() == id) {
+            return music;
+        }
+    }
+    return Music();
+}
+
+QString MusicList::getMusicIdByUrl(const QUrl& url) const
+{
+    for (const auto& music : musicList) {
+        if (music.getMusicUrl() == url) {
+            return music.getMusicId();
+        }
+    }
+    return QString();
+}

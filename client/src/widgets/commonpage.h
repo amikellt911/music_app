@@ -14,7 +14,8 @@ class CommonPage;
 enum class PageType {
         like,
         local,
-        recent
+        recent,
+        uninitialized
 };
 class CommonPage : public QWidget
 {
@@ -34,6 +35,7 @@ public:
     void connectMusicListSignals();
     void setPageType(PageType type);
     PageType getPageType() const;
+    QVector<QUrl> getMusicListUrls() const;
 
 private slots:
     void on_addLocalBtn_clicked();
@@ -48,6 +50,8 @@ private slots:
 
 signals:
     //void updateMusicListLikes();
+    void MusicItemPlayed(const QModelIndex& index,const PageType pageType);
+    void MusicPlayAll(const PageType pageType);
 
 private:
     /**
@@ -75,6 +79,8 @@ private:
     QList<QListWidgetItem*> m_musicListItems;
     QList<ListItemBox*> m_listItemBoxes;
     PageType m_pageType;
+    //音乐列表url
+    QVector<QUrl> m_musicListUrls;
     
 };
 

@@ -12,6 +12,7 @@
         <file>images/lrcWord.png</file>
         <file>images/order_play.png</file>
         <file>images/play.png</file>
+        <file>images/pause.png</file>
         <file>images/playNext.png</file>
         <file>images/playPrev.png</file>
         <file>images/shuffle_play.png</file>
@@ -53,5 +54,9 @@
         <file>images/mute.png</file>
         <file>images/add_local.png</file>
         <file>images/likess.png</file>
+        <file>images/sequential.png</file>
+        <file>images/random.png</file>
+        <file>images/current_item_in_loop.png</file>
+        <file>images/loop.png</file>
     </qresource>
 </RCC>

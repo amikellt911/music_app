@@ -8,13 +8,14 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QLinearGradient>
-
+#include <QDir>
 client::client(QWidget *parent)
     : QWidget(parent), ui(new Ui::client), m_dragging(false), m_longPress(false), m_longPressTimer(nullptr), lastBtFormId(0), volumeHideTimer(nullptr), volumeToolVisible(false)
 {
     ui->setupUi(this);
     // 创建音乐列表对象（现在继承自QObject，需要传入parent）
     musicList = std::make_shared<MusicList>(this);
+    playerManager=std::make_shared<MediaPlayerManager>(this);
     // qDebug()<<"测试1";
     volumeTool = new VolumeTool(this);
     volumeTool->hide();
@@ -66,6 +67,22 @@ void client::initUi()
     ui->localPage->setMusicList(musicList);
     ui->likePage->setMusicList(musicList);
     ui->recentPage->setMusicList(musicList);
+    // connect(mediaPlayer, QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error),
+    //     this, &client::mediaPlayerError);
+
+    // ==== 六、播放控件初始化 =====
+    connect(ui->likePage, &CommonPage::MusicItemPlayed,this,onMusicItemPlayed);
+    connect(ui->likePage, &CommonPage::MusicPlayAll,this,onMusicPlayAll);
+    connect(ui->recentPage, &CommonPage::MusicItemPlayed,this,onMusicItemPlayed);
+    connect(ui->recentPage, &CommonPage::MusicPlayAll,this,onMusicPlayAll);
+    connect(ui->localPage, &CommonPage::MusicItemPlayed,this,onMusicItemPlayed);
+    connect(ui->localPage, &CommonPage::MusicPlayAll,this,onMusicPlayAll);
+    ui->play->setIconSize(QSize(60, 60));
+    ui->playMode->setIconSize(QSize(30, 30));
+    ui->play->setIcon(QIcon(":/images/play.png"));
+    ui->playMode->setIcon(QIcon(":/images/sequential.png"));
+    playMode=1;
+
 }
 
 void client::mousePressEvent(QMouseEvent *event)
@@ -613,6 +630,7 @@ void client::on_volume_toggled(bool checked)
         volumeTool->setVolumeRatio(100);
         volumeTool->setOutSlider(100);
         volumeTool->setSliderBtn(100);
+        playerManager->setVolume(100);
     }
     else
     {
@@ -621,6 +639,7 @@ void client::on_volume_toggled(bool checked)
         volumeTool->setVolumeRatio(0);
         volumeTool->setOutSlider(0);
         volumeTool->setSliderBtn(0);
+        playerManager->setVolume(0);
     }
 }
 
@@ -652,5 +671,123 @@ void client::checkCursorForHide()
         // 你可以选择先启动 volumeHideTimer（延迟）或直接隐藏
         // 我这里直接调用隐藏，使体验更明确；如需延迟改为 start timer
         onVolumeControlHide();
+    }
+}
+
+void client::on_play_clicked()
+{
+    if(playerManager->state()==QMediaPlayer::PlayingState)
+    {
+        ui->play->setIcon(QIcon(":/images/play.png"));
+        playerManager->pause();
+    }
+    else if(playerManager->state()==QMediaPlayer::PausedState)
+    {
+        ui->play->setIcon(QIcon(":/images/pause.png"));
+        playerManager->resume();
+    }
+}
+
+void client::onMusicItemPlayed(const QModelIndex& index, PageType pageType)
+{
+    PageType activePageType = playerManager->getActivePageType();
+    if(activePageType == pageType)
+    {
+        playerManager->setCurrentIndex(index.row());
+    }
+    else
+    {
+        QVector<QUrl> plist;
+        switch (pageType)
+        {
+        case PageType::like:
+            plist = ui->likePage->getMusicListUrls();
+            break;
+        case PageType::local:
+            plist = ui->localPage->getMusicListUrls();
+            break;
+        case PageType::recent:
+            plist = ui->recentPage->getMusicListUrls();
+            break;
+        default:
+            break;
+        }
+        playerManager->setPlaylistWithPageType(plist, index.row(), pageType);
+    }
+    playerManager->play();
+    ui->play->setIcon(QIcon(":/images/pause.png"));
+}
+
+void client::onMusicPlayAll(PageType pageType)
+{
+    PageType activePageType = playerManager->getActivePageType();
+    if(activePageType == pageType)
+    {
+        playerManager->setCurrentIndex(0);
+    }
+    else
+    {
+        QVector<QUrl> plist;
+        switch (pageType)
+        {
+        case PageType::like:
+            plist = ui->likePage->getMusicListUrls();
+            break;
+        case PageType::local:
+            plist = ui->localPage->getMusicListUrls();
+            break;
+        case PageType::recent:
+            plist = ui->recentPage->getMusicListUrls();
+            break;
+        default:
+            break;
+        }
+        playerManager->setPlaylistWithPageType(plist, 0, pageType);
+    }
+    playerManager->play();
+    ui->play->setIcon(QIcon(":/images/pause.png"));
+}
+void client::on_playPrev_clicked()
+{
+    playerManager->playPrevious();
+    playerManager->play();
+    ui->play->setIcon(QIcon(":/images/pause.png"));
+}
+
+void client::on_playNext_clicked()
+{
+    playerManager->playNext();
+    playerManager->play();
+    ui->play->setIcon(QIcon(":/images/pause.png"));
+}
+
+void client::on_playMode_clicked()
+{
+        //     <file>images/sequential.png</file>
+        // <file>images/random.png</file>
+        // <file>images/current_item_in_loop.png</file>
+        // <file>images/loop.png</file>
+    playerManager->togglePlaybackMode();
+    if(playMode==4)
+    {
+        playMode=1;
+    }
+    else playMode++;
+    switch (playMode)
+    {
+    case 1:
+        ui->playMode->setIcon(QIcon(":/images/sequential.png"));
+        break;
+    case 2:
+        ui->playMode->setIcon(QIcon(":/images/random.png"));
+        break;
+    case 3:
+        ui->playMode->setIcon(QIcon(":/images/current_item_in_loop.png"));
+        break;
+    case 4:
+        ui->playMode->setIcon(QIcon(":/images/loop.png"));
+        break;
+    default:
+        break;
     }
 }

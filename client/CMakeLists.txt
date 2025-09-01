@@ -34,6 +34,7 @@ set(PROJECT_SOURCES
   src/widgets/volumetool.cpp
   src/model/music.cpp
   src/model/musiclist.cpp
+  src/model/mediaplayermanager.cpp
 
 )
 set(PROJECT_HEADERS
@@ -46,6 +47,7 @@ set(PROJECT_HEADERS
   src/widgets/volumetool.h
   src/model/music.h
   src/model/musiclist.h
+  src/model/mediaplayermanager.h
 )
 
 

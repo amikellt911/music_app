@@ -11,6 +11,7 @@
 #include "volumetool.h"
 #include "musiclist.h"
 #include <memory>
+#include "mediaplayermanager.h"
 //class VolumeTool;
 QT_BEGIN_NAMESPACE
 namespace Ui { class client; }
@@ -19,6 +20,10 @@ QT_END_NAMESPACE
 class client : public QWidget
 {
     Q_OBJECT
+
+public slots:
+    void onMusicItemPlayed(const QModelIndex& index, PageType pageType);
+    void onMusicPlayAll(PageType pageType);
 
 public:
     client(QWidget *parent = nullptr);
@@ -143,6 +148,16 @@ protected:
 
     void checkCursorForHide();      // 轮询回调
 
+    void on_play_clicked();
+
+    //void mediaPlayerError(QMediaPlayer::Error error);
+
+    void on_playPrev_clicked();
+
+    void on_playNext_clicked();
+
+    void on_playMode_clicked();
+
 private:
     Ui::client *ui;
     
@@ -169,5 +184,9 @@ private:
     QTimer *volumeMonitorTimer;     // 新增：轮询鼠标位置的 timer
     //音乐列表
     std::shared_ptr<MusicList> musicList;
+    //媒体播放
+    std::shared_ptr<MediaPlayerManager> playerManager;
+    //播放模式
+    int playMode;
 };
 #endif // CLIENT_H

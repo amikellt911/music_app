@@ -44,6 +44,22 @@ public:
     bool isEmpty() const;
 
     void updateMusicListLikes(const QString& id, bool like);
+
+    //begin和end
+    QVector<Music>::const_iterator begin() const
+    {
+        return musicList.begin();
+    }
+
+    QVector<Music>::const_iterator end() const
+    {
+        return musicList.end();
+    }
+
+    QUrl getMusicUrlById(const QString& id) const;
+    //通过id获取Music
+    Music getMusicById(const QString& id) const;
+    QString getMusicIdByUrl(const QUrl& url) const;
 signals:
     /**
      * @brief 音乐列表更新信号

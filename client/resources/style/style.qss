@@ -31,15 +31,15 @@
     /*background-position: -6px center;*/ 
 }
 
-#play
+/* #play
 {
     background-image:url(":/images/play.png");
-}
+} */
 
-#playMode
+/* #playMode
 {
     background-image:url(":/images/shuffle_play.png");
-}
+} */
 
 #playNext
 {

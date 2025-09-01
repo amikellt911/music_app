@@ -24,6 +24,21 @@ CommonPage::CommonPage(QWidget *parent) :
     // 初始化成员容器（确保它们被正确初始化）
     m_musicListItems.clear();
     m_listItemBoxes.clear();
+    // 修复 Lambda 函数参数匹配问题：
+    // QListWidget::doubleClicked 只有一个参数：(const QModelIndex& index)
+    // QPushButton::clicked 没有参数
+    // 因此 lambda 函数应该只接受信号实际提供的参数，pageType通过 getPageType() 获取
+    connect(ui->musicList,&QListWidget::doubleClicked,this,[=](const QModelIndex& index)
+    {
+        emit MusicItemPlayed(index, getPageType());  // 通过方法获取当前页面类型
+    }
+    );
+
+    connect(ui->playAll,&QPushButton::clicked,this,[=]()
+    {
+        emit MusicPlayAll(getPageType());  // 通过方法获取当前页面类型
+    }
+    );
     
 }
 
@@ -87,7 +102,7 @@ void CommonPage::updateMusicListDisplay()
 
     // 获取当前的音乐列表
     const QVector<Music>& musicList = m_musicList->getMusicList();
-
+    m_musicListUrls.clear();
     qDebug() << "[DEBUG] Music list size:" << musicList.size();
 
     // 为每个音乐创建ListItemBox控件并添加到QListWidget
@@ -96,6 +111,7 @@ void CommonPage::updateMusicListDisplay()
             continue;
         if(!music.getMusicHistory()&&m_pageType==PageType::recent)
             continue;
+        m_musicListUrls.append(music.getMusicUrl());
         // 创建ListItemBox控件
         ListItemBox *listItemBox = new ListItemBox(ui->musicList);
 
@@ -264,12 +280,12 @@ void CommonPage::addMusicItemToLikeList(const QString& musicId)
         
         ListItemBox *listItemBox = qobject_cast<ListItemBox*>(
             ui->musicList->itemWidget(item));
-        
         if (listItemBox && listItemBox->getId() == musicId) {
             qDebug() << "[DEBUG] Music item already exists in like list:" << musicId;
             return;  // 已经存在，不需要添加
         }
     }
+    m_musicListUrls.append(m_musicList->getMusicUrlById(musicId));
     
     // 从全局音乐列表中找到对应的音乐数据
     if (!m_musicList) {
@@ -377,4 +393,9 @@ void CommonPage::setPageType(PageType type)
 PageType CommonPage::getPageType() const
 {
     return m_pageType;
+}
+
+QVector<QUrl> CommonPage::getMusicListUrls() const
+{
+    return m_musicListUrls;
 }
