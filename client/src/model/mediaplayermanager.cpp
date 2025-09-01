@@ -70,10 +70,12 @@ void MediaPlayerManager::play(const QUrl& url)
         // 如果提供了有效的 URL，播放特定歌曲
         m_player->setMedia(QMediaContent(url));
         m_player->play();
+        emit recentPlaySignal(url);
     } else {
         // 如果没有提供 URL，且有播放列表，则播放当前曲目
         if (!m_playlist->isEmpty()) {
             m_player->play();
+            emit recentPlaySignal(m_playlist->currentMedia().request().url());
         } else {
             qDebug() << "播放失败：无播放内容";
         }

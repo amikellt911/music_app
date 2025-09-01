@@ -93,6 +93,8 @@ signals:
     void error(QMediaPlayer::Error error);
     void errorMessage(const QString& message);
 
+    void recentPlaySignal(const QUrl& url);
+
 private:
     // 【私有成员教学】
     // 使用智能指针保证生命周期安全

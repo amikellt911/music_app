@@ -10,12 +10,15 @@
 #include <QLinearGradient>
 #include <QDir>
 client::client(QWidget *parent)
-    : QWidget(parent), ui(new Ui::client), m_dragging(false), m_longPress(false), m_longPressTimer(nullptr), lastBtFormId(0), volumeHideTimer(nullptr), volumeToolVisible(false)
+    : QWidget(parent), ui(new Ui::client), m_dragging(false), m_longPress(false), m_longPressTimer(nullptr), lastBtFormId(0), volumeHideTimer(nullptr), volumeToolVisible(false),playMode(1)
 {
     ui->setupUi(this);
     // 创建音乐列表对象（现在继承自QObject，需要传入parent）
     musicList = std::make_shared<MusicList>(this);
     playerManager=std::make_shared<MediaPlayerManager>(this);
+    //不需要传this，因为没有继承object对象
+    m_recentPlayData = std::make_shared<QList<QUrl>>();
+
     // qDebug()<<"测试1";
     volumeTool = new VolumeTool(this);
     volumeTool->hide();
@@ -82,6 +85,13 @@ void client::initUi()
     ui->play->setIcon(QIcon(":/images/play.png"));
     ui->playMode->setIcon(QIcon(":/images/sequential.png"));
     playMode=1;
+        //  设置智能指针给RecentPage
+    ui->recentPage->setRecentPlayData(getRecentPlayData());
+    
+    // 连接历史更新信号给RecentPage
+    connect(this, &client::recentPlayHistoryUpdated,
+            ui->recentPage, &CommonPage::onRecentPlayUpdated);
+    connect(playerManager.get(),&MediaPlayerManager::recentPlaySignal,this,&client::onRecentPlaySignal);
 
 }
 
@@ -790,4 +800,39 @@ void client::on_playMode_clicked()
     default:
         break;
     }
+}
+
+
+void client::recordRecentPlay(const QUrl& url)
+{
+    // 检查是否已存在，移除旧的
+    int existingIndex = m_recentPlayData->indexOf(url);
+    if (existingIndex >= 0) {
+        m_recentPlayData->removeAt(existingIndex);
+    }
+    
+    // 添加到开头
+    m_recentPlayData->insert(0, url);
+    
+    // 限制数量
+    while (m_recentPlayData->size() > 50) {
+        m_recentPlayData->removeLast();
+    }
+    
+    qDebug() << "最近播放更新，共" << m_recentPlayData->size() << "首";
+}
+
+client::RecentPlayDataPtr client::getRecentPlayData() const
+{
+    return m_recentPlayData;
+}
+
+
+// 当音乐播放时更新数据
+void client::onRecentPlaySignal(const QUrl& url)
+{
+    recordRecentPlay(url);
+    
+    // 发送信号通知RecentPage更新显示
+    emit recentPlayHistoryUpdated(url);
 }

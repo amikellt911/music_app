@@ -36,8 +36,8 @@ public:
     void setPageType(PageType type);
     PageType getPageType() const;
     QVector<QUrl> getMusicListUrls() const;
-
-private slots:
+    void setRecentPlayData(std::shared_ptr<QList<QUrl>> recentPlayData);
+public slots:
     void on_addLocalBtn_clicked();
 
     /**
@@ -48,6 +48,7 @@ private slots:
 
     void onMusicLikeUpdated(const QString& musicId, bool isLiked);
 
+    void onRecentPlayUpdated(const QUrl &url);
 signals:
     //void updateMusicListLikes();
     void MusicItemPlayed(const QModelIndex& index,const PageType pageType);
@@ -71,6 +72,8 @@ private:
      */
     void addMusicItemToLikeList(const QString& musicId);
     void removeMusicItemFromLikeList(const QString& musicId);
+    void updateMusicListDisplayForRecent();
+    void addMusicItemToDisplay(const QString& musicId, const Music& music);
 
     Ui::CommonPage *ui;
     std::shared_ptr<MusicList> m_musicList;
@@ -81,7 +84,7 @@ private:
     PageType m_pageType;
     //音乐列表url
     QVector<QUrl> m_musicListUrls;
-    
+    std::shared_ptr<QList<QUrl>> m_recentData;
 };
 
 #endif // COMMONPAGE_H

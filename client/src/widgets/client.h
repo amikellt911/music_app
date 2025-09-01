@@ -24,12 +24,23 @@ class client : public QWidget
 public slots:
     void onMusicItemPlayed(const QModelIndex& index, PageType pageType);
     void onMusicPlayAll(PageType pageType);
+    void onRecentPlaySignal(const QUrl& url);
 
 public:
     client(QWidget *parent = nullptr);
     ~client();
 
     void initUi();
+
+    //最近播放的列表的智能指针
+    using RecentPlayDataPtr = std::shared_ptr<QList<QUrl>>;
+    RecentPlayDataPtr getRecentPlayData() const;
+
+    void recordRecentPlay(const QUrl& url);
+
+
+signals:
+    void recentPlayHistoryUpdated(const QUrl& url);
     
 protected:
     // 添加鼠标事件处理函数
@@ -188,5 +199,7 @@ private:
     std::shared_ptr<MediaPlayerManager> playerManager;
     //播放模式
     int playMode;
+    //最近播放数据
+    RecentPlayDataPtr m_recentPlayData;  
 };
 #endif // CLIENT_H

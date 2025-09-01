@@ -399,3 +399,67 @@ QVector<QUrl> CommonPage::getMusicListUrls() const
 {
     return m_musicListUrls;
 }
+
+void CommonPage::setRecentPlayData(std::shared_ptr<QList<QUrl>> recentPlayData)
+{
+    m_recentData=recentPlayData;
+}
+
+void CommonPage::onRecentPlayUpdated(const QUrl &url)
+{
+    __UNUSED_PARAM(url);
+    updateMusicListDisplayForRecent();
+}
+
+void CommonPage::updateMusicListDisplayForRecent()
+{
+    if (!m_recentData) return;
+    
+    qDebug() << "[RECENT] 更新显示，共" << m_recentData->size() << "首歌曲";
+    
+    clearMusicListDisplay();
+    
+    // 显示最多的20首最近播放
+    int displayCount = qMin(20, m_recentData->size());
+    for (int i = 0; i < displayCount; ++i) {
+        const QUrl& url = (*m_recentData)[i];
+        
+        if (!m_musicList) continue;
+        
+        QString musicId = m_musicList->getMusicIdByUrl(url);
+        if (musicId.isEmpty()) continue;
+        
+        Music music = m_musicList->getMusicById(musicId);
+        
+        // 创建并显示Item
+        addMusicItemToDisplay(musicId, music);
+    }
+}
+
+void CommonPage::addMusicItemToDisplay(const QString& musicId, const Music& music)
+{
+
+
+    ListItemBox* listItemBox = new ListItemBox(ui->musicList);
+    
+    QString author = music.getMusicAuthor();
+    QString album = music.getMusicAlbum();
+    
+    listItemBox->setMusicInfo(
+        music.getMusicName(),
+        author.isEmpty() ? "未知艺术家" : author,
+        album.isEmpty() ? "未知专辑" : album,
+        music.getMusicDuration(),
+        music.getMusicLike()
+    );
+    listItemBox->setId(musicId);
+    
+    QListWidgetItem* item = new QListWidgetItem(ui->musicList);
+    item->setSizeHint(QSize(0, 45));
+    
+    ui->musicList->setItemWidget(item, listItemBox);
+    
+    m_musicListItems.append(item);
+    m_listItemBoxes.append(listItemBox);
+
+}
