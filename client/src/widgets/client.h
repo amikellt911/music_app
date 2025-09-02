@@ -170,6 +170,10 @@ protected:
 
     void on_playMode_clicked();
 
+    void onDurationChanged(qint64 duration);
+
+    void onPositionChanged(qint64 position);
+
 private:
     Ui::client *ui;
     

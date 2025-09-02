@@ -95,6 +95,8 @@ void client::initUi()
     connect(volumeTool,&VolumeTool::volumeChanged,this,&client::onVolumeChanged);
     ui->volume->setIcon(QIcon(":/images/mute.png"));
     ui->volume->setIconSize(QSize(30, 30));
+    connect(playerManager.get()->player(),QMediaPlayer::durationChanged,this,&client::onDurationChanged);
+    connect(playerManager.get()->player(),QMediaPlayer::positionChanged,this,&client::onPositionChanged);
 }
 
 void client::mousePressEvent(QMouseEvent *event)
@@ -855,4 +857,14 @@ void client::onVolumeChanged(int value)
         ui->volume->setIcon(QIcon(":/images/volume.png"));
         ui->volume->setChecked(true);
     }
+}
+
+void client::onDurationChanged(qint64 duration)
+{
+    ui->totalTime->setText(QString("%1:%2").arg(duration / 60000, 2, 10, QChar('0')).arg((duration / 1000) % 60, 2, 10, QChar('0')));
+}
+
+void client::onPositionChanged(qint64 position)
+{
+    ui->currentTime->setText(QString("%1:%2").arg(position / 60000, 2, 10, QChar('0')).arg((position / 1000) % 60, 2, 10, QChar('0')));
 }

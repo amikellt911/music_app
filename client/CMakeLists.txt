@@ -32,6 +32,7 @@ set(PROJECT_SOURCES
   src/widgets/recbox.cpp
   src/widgets/recboxitem.cpp
   src/widgets/volumetool.cpp
+  src/widgets/progressbar.cpp
   src/model/music.cpp
   src/model/musiclist.cpp
   src/model/mediaplayermanager.cpp
@@ -45,6 +46,7 @@ set(PROJECT_HEADERS
   src/widgets/recbox.h
   src/widgets/recboxitem.h
   src/widgets/volumetool.h
+  src/widgets/progressbar.h
   src/model/music.h
   src/model/musiclist.h
   src/model/mediaplayermanager.h
@@ -59,6 +61,7 @@ set(PROJECT_FORMS
   src/ui/recbox.ui
   src/ui/recboxitem.ui
   src/ui/volumetool.ui
+  src/ui/progressbar.ui
 )
 set(PROJECT_RESOURCES
     resources/Resource.qrc
