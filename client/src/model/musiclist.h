@@ -60,6 +60,7 @@ public:
     //通过id获取Music
     Music getMusicById(const QString& id) const;
     QString getMusicIdByUrl(const QUrl& url) const;
+    Music getMusicByUrl(const QUrl& url) const;
 signals:
     /**
      * @brief 音乐列表更新信号

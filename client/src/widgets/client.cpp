@@ -9,6 +9,7 @@
 #include <QPainterPath>
 #include <QLinearGradient>
 #include <QDir>
+#include <QMediaPlayer>
 client::client(QWidget *parent)
     : QWidget(parent), ui(new Ui::client), m_dragging(false), m_longPress(false), m_longPressTimer(nullptr), lastBtFormId(0), volumeHideTimer(nullptr), volumeToolVisible(false),playMode(1)
 {
@@ -97,6 +98,7 @@ void client::initUi()
     ui->volume->setIconSize(QSize(30, 30));
     connect(playerManager.get()->player(),QMediaPlayer::durationChanged,this,&client::onDurationChanged);
     connect(playerManager.get()->player(),QMediaPlayer::positionChanged,this,&client::onPositionChanged);
+    connect(playerManager.get()->player(),QMediaPlayer::metaDataAvailableChanged, this, &client::onMetaDataChanged);
 }
 
 void client::mousePressEvent(QMouseEvent *event)
@@ -878,4 +880,44 @@ void client::onDurationChanged(qint64 duration)
 void client::onPositionChanged(qint64 position)
 {
     ui->currentTime->setText(QString("%1:%2").arg(position / 60000, 2, 10, QChar('0')).arg((position / 1000) % 60, 2, 10, QChar('0')));
+}
+
+void client::onMetaDataChanged(bool available)
+{
+    if (!available) return;
+
+    QMediaPlayer* player = playerManager->player();
+    Music music=musicList->getMusicByUrl(playerManager->getCurrentPlayingUrl());
+    // 获取歌名
+    QString title = music.getMusicName();
+    ui->musicName->setText(title);
+
+    // 获取歌手
+    QString artist = music.getMusicAuthor();
+    ui->musicAuthor->setText(artist);
+
+    // 获取封面
+    QVariant thumbnailVariant = player->metaData("ThumbnailImage");
+    QPixmap pixmap;
+    bool hasValidThumbnail = false;
+
+    if (thumbnailVariant.isValid() && thumbnailVariant.canConvert<QImage>()) {
+        QImage image = thumbnailVariant.value<QImage>();
+        if (!image.isNull()) {
+            pixmap = QPixmap::fromImage(image);
+            hasValidThumbnail = true;
+        }
+    }
+
+    // 如果没有有效封面，使用默认图片
+    if (!hasValidThumbnail) {
+        pixmap = QPixmap(":/images/cover/unknown.png");
+    }
+
+    // 设置封面大小为80x80
+    if (!pixmap.isNull()) {
+        pixmap = pixmap.scaled(80, 80, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    }
+
+    ui->musicCover->setPixmap(pixmap);
 }

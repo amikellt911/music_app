@@ -88,3 +88,13 @@ QString MusicList::getMusicIdByUrl(const QUrl& url) const
     }
     return QString();
 }
+
+Music MusicList::getMusicByUrl(const QUrl& url) const
+{
+    for (const auto& music : musicList) {
+        if (music.getMusicUrl() == url) {
+            return music;
+        }
+    }
+    return Music();
+}

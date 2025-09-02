@@ -82,6 +82,8 @@ public:
     QVector<QUrl> getActiveList() const;
     int currentIndex() const;
     int playlistSize() const;
+    //获取当前播放音乐的url
+    QUrl getCurrentPlayingUrl() const;
     
 signals:
     // 【信号设计教学】

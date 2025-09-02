@@ -175,6 +175,8 @@ protected:
 
     void onPositionChanged(qint64 position);
 
+    void onMetaDataChanged(bool available);
+
 private:
     Ui::client *ui;
     

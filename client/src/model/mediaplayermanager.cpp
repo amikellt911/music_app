@@ -375,3 +375,8 @@ void MediaPlayerManager::setPlaylistWithPageType(const QVector<QUrl>& playlist, 
 
     qDebug() << "设置播放列表并更新页面类型：" << static_cast<int>(pageType);
 }
+
+QUrl MediaPlayerManager::getCurrentPlayingUrl() const
+{
+    return m_playlist->currentMedia().request().url();
+}
