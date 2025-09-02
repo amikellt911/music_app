@@ -93,6 +93,8 @@ void client::initUi()
             ui->recentPage, &CommonPage::onRecentPlayUpdated);
     connect(playerManager.get(),&MediaPlayerManager::recentPlaySignal,this,&client::onRecentPlaySignal);
     connect(volumeTool,&VolumeTool::volumeChanged,this,&client::onVolumeChanged);
+    ui->volume->setIcon(QIcon(":/images/mute.png"));
+    ui->volume->setIconSize(QSize(30, 30));
 }
 
 void client::mousePressEvent(QMouseEvent *event)
@@ -633,10 +635,10 @@ void client::initVolumeHideTimer()
 }
 void client::on_volume_clicked()
 {
-    if (playerManager->volume() > 0)
+    if (playerManager->volume() == 0)
     {
         //qDebug() << "测试点击1";
-        ui->volume->setStyleSheet("background-image: url(:/images/volume.png);");
+        ui->volume->setIcon(QIcon(":/images/volume.png"));
         volumeTool->setVolumeRatio(100);
         volumeTool->setOutSlider(100);
         volumeTool->setSliderBtn(100);
@@ -645,7 +647,7 @@ void client::on_volume_clicked()
     else
     {
         qDebug() << "测试点击2";
-        ui->volume->setStyleSheet("background-image: url(:/images/mute.png);");
+        ui->volume->setIcon(QIcon(":/images/mute.png"));
         volumeTool->setVolumeRatio(0);
         volumeTool->setOutSlider(0);
         volumeTool->setSliderBtn(0);
@@ -839,15 +841,18 @@ void client::onRecentPlaySignal(const QUrl& url)
 
 void client::onVolumeChanged(int value)
 {
+    qDebug() << "Client::onVolumeChanged received value:" << value;
+
     playerManager->setVolume(value);
-    if(value==0)
+
+    if(value == 0)
     {
-        //ui->volume->setChecked(false);
         ui->volume->setIcon(QIcon(":/images/mute.png"));
+        ui->volume->setChecked(false);
     }
-    else if(ui->volume->isChecked())
+    else if(value <= 100)
     {
-        //ui->volume->setIcon(QIcon(":/images/volume.png"));
+        ui->volume->setIcon(QIcon(":/images/volume.png"));
         ui->volume->setChecked(true);
     }
 }

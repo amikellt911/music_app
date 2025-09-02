@@ -29,6 +29,10 @@ VolumeTool::VolumeTool(QWidget *parent)
     // ui->outSlider->setAttribute(Qt::WA_TranslucentBackground);     // 背景透明
     initSliderBtnShadow();
 
+    // 安装事件过滤器到volumeWidget，处理鼠标事件
+    ui->volumeWidget->installEventFilter(this);
+
+    qDebug() << "VolumeTool initialized with event filter";
 }
 
 // void VolumeTool::paintEvent(QPaintEvent *event)
@@ -204,20 +208,27 @@ bool VolumeTool::eventFilter(QObject *watched, QEvent *event)
         //坐标是相对父亲的，只有需要转成全局的时候，要用mapToGlobal(QPoint(0,0))
         if(x<ui->inSlider->x()||x>ui->inSlider->x()+ui->inSlider->width())
             return true;
-        int y=ui->inSlider->mapFromGlobal(QCursor::pos()).y();
-        if(y<ui->inSlider->y()||y>ui->inSlider->y()+ui->inSlider->height()+ui->sliderBtn->height()/2)
+        int y_widget = ui->volumeWidget->mapFromGlobal(QCursor::pos()).y();
+        // 检查y是否在inSlider的有效区域内（包括按钮高度的容差）
+        if(y_widget < ui->inSlider->y() || y_widget > ui->inSlider->y() + ui->inSlider->height() + ui->sliderBtn->height()/2)
             return true;
+
+        qDebug() << "VolumeTool: Event received, type:" << event->type() << "x:" << x << "y_widget:" << y_widget;
+
         if(event->type() == QEvent::MouseButtonPress)
         {
+            qDebug() << "VolumeTool: Mouse press detected";
             calcVolume();
         }
         else if(event->type() == QEvent::MouseMove)
         {
             calcVolume();
+            qDebug() << "VolumeTool: Emitting volumeChanged with value:" << volume;
             emit(volumeChanged(volume));
         }
         else if(event->type() == QEvent::MouseButtonRelease)
         {
+            qDebug() << "VolumeTool: Emitting final volumeChanged with value:" << volume;
             emit(volumeChanged(volume));
         }
     }
@@ -225,12 +236,40 @@ bool VolumeTool::eventFilter(QObject *watched, QEvent *event)
 }
 void VolumeTool::calcVolume()
 {
-    int y=ui->volumeWidget->mapFromGlobal(QCursor::pos()).y();
-    volume=(ui->inSlider->y()+ui->inSlider->height()-y)/ui->inSlider->height()*100;
+    // 获取相对于inSlider的鼠标Y坐标
+    int y_relative_to_slider = ui->inSlider->mapFromGlobal(QCursor::pos()).y();
+
+    // 计算音量：从inSlider顶部0%到inSlider底部100%
+    // 注意：inSlider的坐标系 (0,0) 在inSlider左上角
+    int slider_height = ui->inSlider->height();
+
+    // 如果鼠标在inSlider上方，volume = 100%
+    if(y_relative_to_slider <= 0) {
+        volume = 100;
+    }
+    // 如果鼠标在inSlider下方，volume = 0%
+    else if(y_relative_to_slider >= slider_height) {
+        volume = 0;
+    }
+    // 鼠标在inSlider内部，线性映射
+    else {
+        volume = (slider_height - y_relative_to_slider) * 100 / slider_height;
+    }
+
+    // 限制音量范围
+    if(volume < 0) volume = 0;
+    if(volume > 100) volume = 100;
+
+    qDebug() << "VolumeTool::calcVolume: cursor y_relative=" << y_relative_to_slider
+             << ", slider_height=" << slider_height << ", calculated volume=" << volume;
+
     ui->volumeRatio->setText(QString::number(volume)+"%");
-    ui->sliderBtn->move(ui->sliderBtn->x(),y-ui->sliderBtn->height()/2);
+
+    // 更新UI元素位置，使用相对于volumeWidget的坐标
+    int y_widget = ui->volumeWidget->mapFromGlobal(QCursor::pos()).y();
+    ui->sliderBtn->move(ui->sliderBtn->x(), y_widget - ui->sliderBtn->height()/2);
     ui->outSlider->setGeometry(ui->inSlider->x(),
-                              y,
+                              y_widget,
                               ui->inSlider->width(),
-                              ui->inSlider->y()+ui->inSlider->height()-y);
+                              ui->inSlider->y() + ui->inSlider->height() - y_widget);
 }
