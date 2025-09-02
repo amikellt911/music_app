@@ -37,6 +37,7 @@ private:
     // 成员变量
     qint64 m_currentPosition = 0;
     qint64 m_totalDuration = 0;
+    qint64 m_previewPosition = -1;  // 拖拽预览位置，-1表示无效
     bool m_isDragging = false;
 
     // 进度条区域

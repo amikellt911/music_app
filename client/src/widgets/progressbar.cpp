@@ -41,10 +41,13 @@ void ProgressBar::onDurationChanged(qint64 duration)
 
 void ProgressBar::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton && m_totalDuration > 0) {
+    if (event->button() == Qt::LeftButton && m_totalDuration > 0 &&
+        m_barRect.contains(event->pos())) {
         m_isDragging = true;
+        grabMouse();  // 抓取鼠标事件
         qint64 position = calculatePositionFromMouse(event->pos());
-        emit positionChanged(position);
+        m_previewPosition = position;  // 设置预览位置
+        updateProgressVisualization();  // 更新显示预览
     }
     QWidget::mousePressEvent(event);
 }
@@ -52,16 +55,31 @@ void ProgressBar::mousePressEvent(QMouseEvent *event)
 void ProgressBar::mouseMoveEvent(QMouseEvent *event)
 {
     if (m_isDragging && m_totalDuration > 0) {
-        qint64 position = calculatePositionFromMouse(event->pos());
-        emit positionChanged(position);
+        // 拖拽中只更新预览，不发射信号
+        qint64 position = calculatePositionFromMouse(mapFromGlobal(event->globalPos()));
+        m_previewPosition = position;
+        updateProgressVisualization();  // 显示预览位置
+        event->accept();
+        return;
     }
     QWidget::mouseMoveEvent(event);
 }
 
 void ProgressBar::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton) {
+    if (event->button() == Qt::LeftButton && m_isDragging) {
         m_isDragging = false;
+        releaseMouse();  // 释放鼠标抓取
+
+        // 只有在释放时才发射最终位置信号
+        if (m_previewPosition >= 0) {
+            emit positionChanged(m_previewPosition);
+            m_currentPosition = m_previewPosition;  // 更新当前位置
+            m_previewPosition = -1;  // 重置预览位置
+        }
+
+        event->accept();
+        return;
     }
     QWidget::mouseReleaseEvent(event);
 }
@@ -70,8 +88,12 @@ void ProgressBar::updateProgressVisualization()
 {
     if (!ui->above || m_totalDuration == 0) return;
 
+    // 如果正在拖拽，显示预览位置，否则显示当前播放位置
+    qint64 displayPosition = (m_isDragging && m_previewPosition >= 0) ?
+                             m_previewPosition : m_currentPosition;
+
     // 计算进度百分比
-    double progressRatio = static_cast<double>(m_currentPosition) / m_totalDuration;
+    double progressRatio = static_cast<double>(displayPosition) / m_totalDuration;
     progressRatio = qBound(0.0, progressRatio, 1.0);
 
     // 更新above widget的宽度
