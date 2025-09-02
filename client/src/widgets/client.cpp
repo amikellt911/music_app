@@ -474,6 +474,17 @@ void client::initConnect()
     {
         connect(it.value(), &BtForm::btClicked, this, &client::onBtFormClicked);
     }
+
+    // 连接进度条信号到播放管理器
+    if (ui->progressBar) {
+        connect(ui->progressBar, &ProgressBar::positionChanged, playerManager.get(), &MediaPlayerManager::setPosition);
+
+        // 连接播放管理器的信号到进度条
+        connect(playerManager.get(), &MediaPlayerManager::positionChanged,
+                ui->progressBar, &ProgressBar::onPositionChanged);
+        connect(playerManager.get(), &MediaPlayerManager::durationChanged,
+                ui->progressBar, &ProgressBar::onDurationChanged);
+    }
 }
 
 void client::onBtFormClicked(int id)

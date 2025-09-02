@@ -202,6 +202,20 @@ void MediaPlayerManager::setVolume(int volume)
     m_player->setVolume(volume);
 }
 
+// 【进度控制实现】
+void MediaPlayerManager::setPosition(qint64 position)
+{
+    // 确保播放位置在合理范围内
+    qint64 totalDuration = m_player->duration();
+    if (totalDuration > 0) {
+        position = qBound(0LL, position, totalDuration);
+        m_player->setPosition(position);
+        qDebug() << "设置播放位置：" << position << "/" << totalDuration;
+    } else {
+        qDebug() << "无法设置播放位置：总时长未确定";
+    }
+}
+
 // 【设置播放列表 - 核心功能】
 void MediaPlayerManager::setPlaylist(const QVector<QUrl>& playlist, int index)
 {

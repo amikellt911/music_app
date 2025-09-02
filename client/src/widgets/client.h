@@ -12,6 +12,7 @@
 #include "musiclist.h"
 #include <memory>
 #include "mediaplayermanager.h"
+#include "progressbar.h"
 //class VolumeTool;
 QT_BEGIN_NAMESPACE
 namespace Ui { class client; }

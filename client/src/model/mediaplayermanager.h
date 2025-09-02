@@ -34,6 +34,10 @@ public:
     //从暂停恢复，play是重新开始播放
     void resume();
     void setVolume(int volume);          // 音量控制
+
+    // 进度控制 - 设置播放位置
+    void setPosition(qint64 position);    // 设置播放进度位置
+
     //设置音乐列表(先设置列表，然后再把列表传入playlist),通常是双击的时候或者是点击播放全部，会改变列表，当做槽函数
     //如果是 playBtn那么index默认为0，否则就要传入index
     void setPlaylist(const QVector<QUrl>& playlist,int index=0);

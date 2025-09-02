@@ -1,21 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author/>
- <comment/>
- <exportmacro/>
  <class>ProgressBar</class>
  <widget class="QWidget" name="ProgressBar">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>835</width>
+    <height>30</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:rgb(250,250,250)</string>
+  </property>
+  <widget class="QWidget" name="under" native="true">
+   <property name="geometry">
+    <rect>
+     <x>118</x>
+     <y>10</y>
+     <width>600</width>
+     <height>10</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(217,219,222);
+border-radius:5px;</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="above" native="true">
+   <property name="geometry">
+    <rect>
+     <x>118</x>
+     <y>10</y>
+     <width>0</width>
+     <height>10</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(241,109,118);
+border-radius:5px;</string>
+   </property>
+  </widget>
  </widget>
- <pixmapfunction/>
+ <resources/>
  <connections/>
 </ui>
