@@ -25,6 +25,7 @@ public slots:
     void onMusicItemPlayed(const QModelIndex& index, PageType pageType);
     void onMusicPlayAll(PageType pageType);
     void onRecentPlaySignal(const QUrl& url);
+    void onVolumeChanged(int value);
 
 public:
     client(QWidget *parent = nullptr);
@@ -155,7 +156,7 @@ protected:
     void onBtFormClicked(int id);
     
 
-    void on_volume_toggled(bool checked);
+    void on_volume_clicked();
 
     void checkCursorForHide();      // 轮询回调
 

@@ -19,11 +19,15 @@ public:
     void setSliderBtn(int value);
 protected:
     void paintEvent(QPaintEvent *event) override;
-
+    bool eventFilter(QObject *watched, QEvent *event);
 private:
     Ui::VolumeTool *ui;
+    int volume;
 private:
     void initSliderBtnShadow();
+    void calcVolume();
+signals:
+    void volumeChanged(int value);
 };
 
 #endif // VOLUMETOOL_H

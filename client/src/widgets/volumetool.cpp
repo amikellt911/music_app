@@ -194,3 +194,43 @@ void VolumeTool::initSliderBtnShadow()
     ui->sliderBtn->setGraphicsEffect(effect);
 
 }
+
+bool VolumeTool::eventFilter(QObject *watched, QEvent *event)
+{
+    if(watched == ui->volumeWidget)
+    {
+        int x=ui->volumeWidget->mapFromGlobal(QCursor::pos()).x();
+        //int xx=ui->volumeWidget->mapFromGlobal(ui->inSlider->pos()).x();
+        //坐标是相对父亲的，只有需要转成全局的时候，要用mapToGlobal(QPoint(0,0))
+        if(x<ui->inSlider->x()||x>ui->inSlider->x()+ui->inSlider->width())
+            return true;
+        int y=ui->inSlider->mapFromGlobal(QCursor::pos()).y();
+        if(y<ui->inSlider->y()||y>ui->inSlider->y()+ui->inSlider->height()+ui->sliderBtn->height()/2)
+            return true;
+        if(event->type() == QEvent::MouseButtonPress)
+        {
+            calcVolume();
+        }
+        else if(event->type() == QEvent::MouseMove)
+        {
+            calcVolume();
+            emit(volumeChanged(volume));
+        }
+        else if(event->type() == QEvent::MouseButtonRelease)
+        {
+            emit(volumeChanged(volume));
+        }
+    }
+    return QWidget::eventFilter(watched, event);
+}
+void VolumeTool::calcVolume()
+{
+    int y=ui->volumeWidget->mapFromGlobal(QCursor::pos()).y();
+    volume=(ui->inSlider->y()+ui->inSlider->height()-y)/ui->inSlider->height()*100;
+    ui->volumeRatio->setText(QString::number(volume)+"%");
+    ui->sliderBtn->move(ui->sliderBtn->x(),y-ui->sliderBtn->height()/2);
+    ui->outSlider->setGeometry(ui->inSlider->x(),
+                              y,
+                              ui->inSlider->width(),
+                              ui->inSlider->y()+ui->inSlider->height()-y);
+}
