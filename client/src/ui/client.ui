@@ -761,11 +761,29 @@
                  <widget class="QLabel" name="musicCover">
                   <property name="geometry">
                    <rect>
-                    <x>9</x>
-                    <y>9</y>
-                    <width>30</width>
-                    <height>16</height>
+                    <x>5</x>
+                    <y>5</y>
+                    <width>80</width>
+                    <height>80</height>
                    </rect>
+                  </property>
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>80</width>
+                    <height>80</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>80</width>
+                    <height>80</height>
+                   </size>
                   </property>
                   <property name="text">
                    <string>图片</string>
@@ -774,8 +792,8 @@
                  <widget class="QLabel" name="musicName">
                   <property name="geometry">
                    <rect>
-                    <x>170</x>
-                    <y>10</y>
+                    <x>120</x>
+                    <y>20</y>
                     <width>30</width>
                     <height>16</height>
                    </rect>
@@ -787,8 +805,8 @@
                  <widget class="QPushButton" name="download">
                   <property name="geometry">
                    <rect>
-                    <x>170</x>
-                    <y>50</y>
+                    <x>220</x>
+                    <y>30</y>
                     <width>30</width>
                     <height>30</height>
                    </rect>
@@ -806,7 +824,20 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string/>
+                   <string>下载</string>
+                  </property>
+                 </widget>
+                 <widget class="QLabel" name="musicAuthor">
+                  <property name="geometry">
+                   <rect>
+                    <x>120</x>
+                    <y>60</y>
+                    <width>30</width>
+                    <height>16</height>
+                   </rect>
+                  </property>
+                  <property name="text">
+                   <string>歌手</string>
                   </property>
                  </widget>
                 </widget>
