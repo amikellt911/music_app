@@ -36,6 +36,7 @@ set(PROJECT_SOURCES
   src/model/music.cpp
   src/model/musiclist.cpp
   src/model/mediaplayermanager.cpp
+  src/model/lrcwidget.cpp
 
 )
 set(PROJECT_HEADERS
@@ -50,6 +51,7 @@ set(PROJECT_HEADERS
   src/model/music.h
   src/model/musiclist.h
   src/model/mediaplayermanager.h
+  src/model/lrcwidget.h
 )
 
 
@@ -62,6 +64,7 @@ set(PROJECT_FORMS
   src/ui/recboxitem.ui
   src/ui/volumetool.ui
   src/ui/progressbar.ui
+  src/ui/lrcwidget.ui
 )
 set(PROJECT_RESOURCES
     resources/Resource.qrc

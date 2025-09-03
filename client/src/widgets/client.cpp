@@ -24,6 +24,10 @@ client::client(QWidget *parent)
     volumeTool = new VolumeTool(this);
     volumeTool->hide();
     // qDebug()<<"测试2";
+    lrcPage = new LrcWidget(this);
+    lrcPage->setGeometry(10,10,lrcPage->width(),lrcPage->height());
+    qDebug()<<"lrcPage高度"<<lrcPage->height();
+    lrcPage->hide();
     initUi();
     // qDebug()<<"测试3";
 }
@@ -920,4 +924,9 @@ void client::onMetaDataChanged(bool available)
     }
 
     ui->musicCover->setPixmap(pixmap);
+}
+void client::on_lrcWord_clicked()
+{
+    lrcPage->show();
+
 }

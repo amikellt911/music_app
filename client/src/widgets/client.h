@@ -13,6 +13,7 @@
 #include <memory>
 #include "mediaplayermanager.h"
 #include "progressbar.h"
+#include "lrcwidget.h"
 //class VolumeTool;
 QT_BEGIN_NAMESPACE
 namespace Ui { class client; }
@@ -177,6 +178,8 @@ protected:
 
     void onMetaDataChanged(bool available);
 
+    void on_lrcWord_clicked();
+
 private:
     Ui::client *ui;
     
@@ -209,5 +212,7 @@ private:
     int playMode;
     //最近播放数据
     RecentPlayDataPtr m_recentPlayData;  
+    //歌词界面
+    LrcWidget *lrcPage;
 };
 #endif // CLIENT_H

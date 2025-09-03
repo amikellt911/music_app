@@ -27,6 +27,7 @@
         <file>images/p_local.png</file>
         <file>images/p_rec.png</file>
         <file>images/p_recent.png</file>
+        <file>images/hideBtn.png</file>
         <file>images/rec/01.png</file>
         <file>images/rec/02.png</file>
         <file>images/rec/03.png</file>
@@ -52,6 +53,7 @@
         <file>images/cover/03.png</file>
         <file>images/cover/04.png</file>
         <file>images/cover/unknown.png</file>
+        <file>images/cover/lrc_background.png</file>
         <file>images/mute.png</file>
         <file>images/add_local.png</file>
         <file>images/likess.png</file>
