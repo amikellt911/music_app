@@ -9,9 +9,8 @@ MusicList::MusicList(QObject *parent)
 
 void MusicList::addMusicByUrl(const QList<QUrl>& urls)
 {
-    bool hasNewMusic = false;
 
-    for (const auto& url : urls) {
+    for (const QUrl& url : urls) {
         QMimeDatabase mimeDatabase;
         QMimeType mimeType = mimeDatabase.mimeTypeForFile(url.toLocalFile());
         QString mimeTypeName = mimeType.name();
@@ -20,15 +19,19 @@ void MusicList::addMusicByUrl(const QList<QUrl>& urls)
             qDebug() << "Audio file:" << url.toLocalFile();
             // 创建Music对象，立即解析元数据
             Music music(url);
-            musicList.push_back(music);
-            hasNewMusic = true;
+            emit checkMusics(music.getMusicId(),url);
         } else {
             qDebug() << "Not an audio file:" << url.toLocalFile();
         }
     }
 
-    // 如果有新的音乐被添加，发送更新信号
+}
+
+
+void MusicList::onCheckMusic(bool hasNewMusic,const QUrl &url)
+{
     if (hasNewMusic) {
+        musicList.push_back(Music(url));
         emit musicListUpdated();
     }
 }
@@ -54,6 +57,7 @@ void MusicList::updateMusicListLikes(const QString& id,bool like)
         if (music.getMusicId() == id) {
             music.setMusicLike(like);
             emit musicListLikeUpdated(id,like);
+            emit musicListLikeUpdatedDb(id,like);
             break;
         }
     }

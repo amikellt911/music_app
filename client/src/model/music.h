@@ -25,12 +25,13 @@ public:
     QUrl getMusicUrl() const;
     QString getMusicId() const;
     QString getLrcFilePath() const;
+    QString getFileMd5(const QString &filePath);
 
 private:
     //解析音乐媒体元数据
     void parseMusicMetaData(const QUrl &url);
 private:
-    //音乐唯一性id,uuid
+    //音乐唯一性id,文件哈希
     QString m_id;
     //音乐名称
     QString m_name;
@@ -42,7 +43,7 @@ private:
     qint64 m_duration;
     //是否喜欢
     bool m_like;
-    //是否为历史播放（后期会改，先暂时看他的）
+    //是否为历史播放（之后要改，不然你历史记录持久化的顺序有问题）
     bool m_history;
     //音乐路径
     QUrl m_url;

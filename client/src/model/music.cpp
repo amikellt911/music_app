@@ -1,9 +1,10 @@
 #include "music.h"
-#include <QUuid>
 #include <QMediaPlayer>
 #include <QMediaMetaData>
 #include <QCoreApplication>
 #include <QThread>
+#include <QCryptographicHash>
+#include <QFile>
 Music::Music()
     :m_like(false),m_history(false)
 {
@@ -16,7 +17,6 @@ Music::Music(QUrl url, bool parseMetaData)
 {
     //感觉还是要了解一下这个Uuid，我感觉他可能只在这个域是唯一的，反正感觉不对
     //或者应该由另一个对象去传uuid，比如一个全局的
-    m_id = QUuid::createUuid().toString();
 
     // 立即解析元数据可能会导致阻塞，暂时取消
     // 可以在需要显示音乐信息时再解析
@@ -34,6 +34,7 @@ Music::Music(QUrl url, bool parseMetaData)
         m_album = "未知专辑";
         m_duration = 0;
     }
+    m_id = getFileMd5(url.toLocalFile());
 }
 
 
@@ -178,4 +179,21 @@ QString Music::getLrcFilePath() const
     //把.后面的转换为lrc
     lrcFilePath = lrcFilePath.left(lrcFilePath.lastIndexOf(".")) + ".lrc";
     return lrcFilePath;
+}
+
+QString Music::getFileMd5(const QString &filePath)
+{
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qWarning() << "Cannot open file for hashing:" << filePath;
+        return QString(); // 返回空字符串表示失败
+    }
+
+    QCryptographicHash hash(QCryptographicHash::Md5);
+    // 如果文件很大，可以分块读取，避免一次性加载到内存
+    if (hash.addData(&file)) {
+        return hash.result().toHex(); // 返回16进制表示的32位MD5字符串
+    }
+
+    return QString();
 }

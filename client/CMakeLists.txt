@@ -37,7 +37,7 @@ set(PROJECT_SOURCES
   src/model/musiclist.cpp
   src/model/mediaplayermanager.cpp
   src/model/lrcwidget.cpp
-
+  src/controller/databaseworker.cpp
 )
 set(PROJECT_HEADERS
   src/widgets/btform.h
@@ -52,6 +52,7 @@ set(PROJECT_HEADERS
   src/model/musiclist.h
   src/model/mediaplayermanager.h
   src/model/lrcwidget.h
+  src/controller/databaseworker.h
 )
 
 
@@ -86,6 +87,7 @@ find_package(Qt5 COMPONENTS Widgets MULTIMEDIA SQL REQUIRED)
   target_include_directories(client PRIVATE
   "${PROJECT_SOURCE_DIR}/src/widgets"
   "${PROJECT_SOURCE_DIR}/src/model"
+  "${PROJECT_SOURCE_DIR}/src/controller"
 )
 
 target_link_libraries(client PRIVATE Qt5::Widgets Qt5::Multimedia Qt5::Sql)

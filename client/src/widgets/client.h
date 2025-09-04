@@ -15,6 +15,9 @@
 #include "progressbar.h"
 #include "lrcwidget.h"
 #include <QPropertyAnimation>
+#include "databaseworker.h"
+#include <QSqlDatabase>
+#include <QThread>
 //class VolumeTool;
 QT_BEGIN_NAMESPACE
 namespace Ui { class client; }
@@ -29,6 +32,13 @@ public slots:
     void onMusicPlayAll(PageType pageType);
     void onRecentPlaySignal(const QUrl& url);
     void onVolumeChanged(int value);
+    //任务是否完成
+    void onDbTaskFinished(bool success, const QString &result);
+    void onErrorOccurred(const QString &error);
+
+    void oncheckMusics(const QString &mid,const QUrl &url);
+
+    void onmusicListLikeUpdated(const QString& id, bool like);
 
 public:
     client(QWidget *parent = nullptr);
@@ -45,7 +55,11 @@ public:
 
 signals:
     void recentPlayHistoryUpdated(const QUrl& url);
-    
+    //执行sql的信号
+    void startSqlTask(const QString& sql, const QVariant& param);
+
+    void checkMusic(const QString& mid,const QUrl& url);
+    void ifCheckMusic(bool hasNewMusic,const QUrl& url);
 protected:
     // 添加鼠标事件处理函数
     void mousePressEvent(QMouseEvent *event) override;
@@ -151,6 +165,7 @@ protected:
      * 打印当前鼠标位置和相关控件的调试信息
      */
     void printDebugCursorInfo();
+    
  private slots:
     void on_quit_clicked();
     // 长按定时器槽函数
@@ -217,5 +232,9 @@ private:
     LrcWidget *lrcPage;
     //歌词显示动画
     QPropertyAnimation *lrcAnimation;
+    //数据库操作线程
+    QThread* m_dbThread;
+    DatabaseWorker* m_dbWorker;
+    
 };
 #endif // CLIENT_H

@@ -10,6 +10,8 @@
 #include <QLinearGradient>
 #include <QDir>
 #include <QMediaPlayer>
+#include <QMessageBox>
+#include <QSqlQuery>
 client::client(QWidget *parent)
     : QWidget(parent), ui(new Ui::client), m_dragging(false), m_longPress(false), m_longPressTimer(nullptr), lastBtFormId(0), volumeHideTimer(nullptr), volumeToolVisible(false),playMode(1)
 {
@@ -34,11 +36,54 @@ client::client(QWidget *parent)
     lrcAnimation->setStartValue(QRect(10,10+lrcPage->height(),lrcPage->width(),lrcPage->height()));
     lrcAnimation->setEndValue(QRect(10,10,lrcPage->width(),lrcPage->height()));
     initUi();
+    
     // qDebug()<<"测试3";
+     // 1. 创建线程和 Worker
+    m_dbThread = new QThread(this);
+    m_dbWorker = new DatabaseWorker();
+
+    // 2. 将 Worker “移动”到新线程中
+    m_dbWorker->moveToThread(m_dbThread);
+
+    // 3. 核心：连接信号和槽
+    // 当线程启动后，调用 setupDatabase 进行初始化
+    connect(m_dbThread, &QThread::started, m_dbWorker, &DatabaseWorker::setupDatabase);
+    // 当我们（在主线程）想执行任务时，发出一个信号
+    connect(this, &client::startSqlTask, m_dbWorker, &DatabaseWorker::executeSqlTask);
+    // 当 Worker 完成任务时，通知我们（主线程）更新UI
+    connect(m_dbWorker, &DatabaseWorker::taskFinished, this, &client::onDbTaskFinished);
+    //worker发生错误
+    connect(m_dbWorker, &DatabaseWorker::errorOccurred, this, &client::onErrorOccurred);
+    // 线程结束时，自动删除 Worker 对象
+    connect(m_dbThread, &QThread::finished, m_dbWorker, &QObject::deleteLater);
+
+    connect(musicList.get(),&MusicList::checkMusics,this,[=](const QString &mid,const QUrl &url)
+    {
+        emit checkMusic(mid,url);
+    });
+    connect(this,client::checkMusic,m_dbWorker,&DatabaseWorker::onCheckMusic);
+    connect(m_dbWorker,&DatabaseWorker::ifCheckMusic,this,[=](const bool hasNewMusic,const QUrl &url)
+    {
+        musicList->onCheckMusic(hasNewMusic,url);
+    });
+    connect(musicList.get(),&MusicList::musicListLikeUpdatedDb,this,[=](const QString& id, bool like)
+    {
+        QString sql="update music_info set mlike=? where mid=?";
+        emit startSqlTask(sql,QVariantList{like,id});
+    });
+    connect(m_dbWorker,&DatabaseWorker::initMusicInfo,this,[=](const QUrl &url)
+    {
+        musicList->addMusicByUrl(QList<QUrl>{url});
+    });
+    // 4. 启动线程
+    m_dbThread->start();
 }
 
 client::~client()
 {
+        // 优雅地退出线程
+    m_dbThread->quit();
+    m_dbThread->wait(); // 等待线程完全结束
     delete ui;
 }
 
@@ -858,7 +903,8 @@ client::RecentPlayDataPtr client::getRecentPlayData() const
 void client::onRecentPlaySignal(const QUrl& url)
 {
     recordRecentPlay(url);
-    
+    QString sql="update music_info set mhistory=1 where murl=?";
+    emit startSqlTask(sql,url);
     // 发送信号通知RecentPage更新显示
     emit recentPlayHistoryUpdated(url);
 }
@@ -946,4 +992,15 @@ void client::on_lrcWord_clicked()
 {    
     lrcPage->show();
     lrcAnimation->start();
+}
+
+void onDbTaskFinished(bool success, const QString &result)
+{
+    if(!success){
+        qDebug() << "数据库操作失败..."<<result;
+    }
+}
+void onErrorOccurred(const QString &error)
+{
+    QMessageBox::critical(nullptr, "错误", error);
 }
