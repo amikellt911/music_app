@@ -171,3 +171,11 @@ void Music::parseMusicMetaData(const QUrl &url)
              << "album:" << m_album << "duration:" << m_duration
              << "filename:" << filename;
 }
+
+QString Music::getLrcFilePath() const
+{
+    QString lrcFilePath = m_url.toLocalFile();
+    //把.后面的转换为lrc
+    lrcFilePath = lrcFilePath.left(lrcFilePath.lastIndexOf(".")) + ".lrc";
+    return lrcFilePath;
+}

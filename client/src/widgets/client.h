@@ -14,6 +14,7 @@
 #include "mediaplayermanager.h"
 #include "progressbar.h"
 #include "lrcwidget.h"
+#include <QPropertyAnimation>
 //class VolumeTool;
 QT_BEGIN_NAMESPACE
 namespace Ui { class client; }
@@ -214,5 +215,7 @@ private:
     RecentPlayDataPtr m_recentPlayData;  
     //歌词界面
     LrcWidget *lrcPage;
+    //歌词显示动画
+    QPropertyAnimation *lrcAnimation;
 };
 #endif // CLIENT_H

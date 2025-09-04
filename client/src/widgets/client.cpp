@@ -26,8 +26,13 @@ client::client(QWidget *parent)
     // qDebug()<<"测试2";
     lrcPage = new LrcWidget(this);
     lrcPage->setGeometry(10,10,lrcPage->width(),lrcPage->height());
-    qDebug()<<"lrcPage高度"<<lrcPage->height();
+    //qDebug()<<"lrcPage高度"<<lrcPage->height();
     lrcPage->hide();
+
+    lrcAnimation=new QPropertyAnimation(lrcPage, "geometry",this);
+    lrcAnimation->setDuration(500);
+    lrcAnimation->setStartValue(QRect(10,10+lrcPage->height(),lrcPage->width(),lrcPage->height()));
+    lrcAnimation->setEndValue(QRect(10,10,lrcPage->width(),lrcPage->height()));
     initUi();
     // qDebug()<<"测试3";
 }
@@ -884,6 +889,7 @@ void client::onDurationChanged(qint64 duration)
 void client::onPositionChanged(qint64 position)
 {
     ui->currentTime->setText(QString("%1:%2").arg(position / 60000, 2, 10, QChar('0')).arg((position / 1000) % 60, 2, 10, QChar('0')));
+    lrcPage->positionChanged(position);
 }
 
 void client::onMetaDataChanged(bool available)
@@ -924,9 +930,20 @@ void client::onMetaDataChanged(bool available)
     }
 
     ui->musicCover->setPixmap(pixmap);
+    QString lrcFilePath = music.getLrcFilePath();
+    if(QFile::exists(lrcFilePath))
+    {
+        lrcPage->setLrcUrl(lrcFilePath,true);
+        qDebug() << "歌词文件已存在..."<<lrcFilePath;
+    }
+    else{
+        lrcPage->setLrcUrl("",false);
+        qDebug() << "歌词文件不存在..."<<lrcFilePath;
+    }
+    lrcPage->parseLrcFile();
 }
 void client::on_lrcWord_clicked()
-{
+{    
     lrcPage->show();
-
+    lrcAnimation->start();
 }

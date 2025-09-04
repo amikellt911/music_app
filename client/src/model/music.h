@@ -24,6 +24,7 @@ public:
     bool getMusicHistory() const;
     QUrl getMusicUrl() const;
     QString getMusicId() const;
+    QString getLrcFilePath() const;
 
 private:
     //解析音乐媒体元数据
