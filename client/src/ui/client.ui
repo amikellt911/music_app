@@ -245,32 +245,6 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QPushButton" name="skin">
-                 <property name="minimumSize">
-                  <size>
-                   <width>30</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>30</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">#skin
-{
-	background-image:url(&quot;:/images/skin.png&quot;);
-}
-</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <widget class="QPushButton" name="min">
                  <property name="minimumSize">
                   <size>
@@ -285,10 +259,7 @@
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">#min
-{
-	background-image:url(&quot;:/images/min.png&quot;);
-}</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string/>
@@ -310,10 +281,7 @@
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">#max
-{
-	background-image:url(&quot;:/images/max.png&quot;);
-}</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string/>
@@ -335,10 +303,7 @@
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">#quit
-{
-	background-image:url(&quot;:/images/quit.png&quot;);
-}</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string/>
@@ -584,6 +549,22 @@
                   <width>820</width>
                   <height>500</height>
                  </rect>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QScrollBar:vertical
+{
+	border:none;
+	width:5px;
+	background-color:rgb(207, 224, 255);
+	margin:0px 0px 0px 0px;
+}
+QScrollBar::handle:vertical
+{
+	width:5px;
+	border-radius:2px;
+	background-color:rgb(56, 56, 56);
+	min-height:10px;
+}</string>
                 </property>
                 <property name="widgetResizable">
                  <bool>true</bool>

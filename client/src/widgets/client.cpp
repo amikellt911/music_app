@@ -12,10 +12,19 @@
 #include <QMediaPlayer>
 #include <QMessageBox>
 #include <QSqlQuery>
+#include <QSystemTrayIcon>
+#include <QMenu>
 client::client(QWidget *parent)
     : QWidget(parent), ui(new Ui::client), m_dragging(false), m_longPress(false), m_longPressTimer(nullptr), lastBtFormId(0), volumeHideTimer(nullptr), volumeToolVisible(false),playMode(1)
 {
     ui->setupUi(this);
+    setWindowIcon(QIcon(":/images/t_logo.png"));
+    ui->max->setCheckable(true);
+    ui->max->setIcon(QIcon(":/images/max.png"));
+    ui->min->setIcon(QIcon(":/images/min.png"));
+    ui->quit->setIcon(QIcon(":/images/quit.png"));
+    ui->lrcWord->setIcon(QIcon(":/images/lrcWord.png"));
+    ui->lrcWord->setIconSize(QSize(30,30));
     // 创建音乐列表对象（现在继承自QObject，需要传入parent）
     musicList = std::make_shared<MusicList>(this);
     playerManager=std::make_shared<MediaPlayerManager>(this);
@@ -100,6 +109,29 @@ client::~client()
  */
 void client::initUi()
 {
+    QSystemTrayIcon *trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setIcon(QIcon(":/images/t_logo.png"));
+    trayIcon->setToolTip("TinyMusic");
+    QMenu* trayMenu = new QMenu();
+    QAction *quitAction = new QAction("退出");
+    trayMenu->addAction(quitAction);
+    connect(quitAction,&QAction::triggered,this,&client::quitApp);
+    trayIcon->setContextMenu(trayMenu);
+    connect(trayIcon,&QSystemTrayIcon::activated,this,[=](QSystemTrayIcon::ActivationReason reason)
+        {
+            switch(reason)
+            {
+                case QSystemTrayIcon::DoubleClick:
+                    this->show();
+                    this->raise();
+                    this->activateWindow();
+                    break;
+                default:
+                    break;
+            }
+        }
+    );
+    trayIcon->show();
     // ===== 一、基础窗口属性设置 =====
     this->setWindowFlag(Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground);
@@ -429,7 +461,8 @@ void client::onLongPressTimeout()
 
 void client::on_quit_clicked()
 {
-    close();
+    //close();
+    hide();
 }
 
 void client::initLongPressTimer()
@@ -1009,4 +1042,40 @@ void client::onDbTaskFinished(bool success, const QString &result)
 void client::onErrorOccurred(const QString &error)
 {
     QMessageBox::critical(nullptr, "错误", error);
+}
+void client::on_min_clicked()
+{
+    this->showMinimized();
+}
+
+void client::on_max_toggled(bool checked)
+{
+    if(checked){
+        ui->max->setIcon(QIcon(":/images/max_1.png"));
+        this->showMaximized();
+    }else{
+        ui->max->setIcon(QIcon(":/images/max.png"));
+        this->showNormal();
+    }
+}
+
+
+void client::changeEvent(QEvent *event)
+{
+    // 1. 首先，调用基类的实现，这是非常重要的，否则窗口可能会行为异常
+    QWidget::changeEvent(event);
+
+    // 2. 检查事件的类型是否是我们关心的窗口状态变化
+    if (event->type() == QEvent::WindowStateChange) {
+        // 3. 如果是，就执行我们想要的同步逻辑
+        // isMaximized() 会在窗口状态变为最大化时返回 true
+        if (ui->max) { // 确保 ui->max 指针有效
+            ui->max->setChecked(this->isMaximized());
+        }
+    }
+}
+
+void client::quitApp()
+{
+    close();
 }

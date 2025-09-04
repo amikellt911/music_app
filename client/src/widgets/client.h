@@ -18,6 +18,7 @@
 #include "databaseworker.h"
 #include <QSqlDatabase>
 #include <QThread>
+#include <QEvent>
 //class VolumeTool;
 QT_BEGIN_NAMESPACE
 namespace Ui { class client; }
@@ -66,6 +67,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void initLongPressTimer();
+    void changeEvent(QEvent *event) override; 
     void initShadow();
     //获取图片的主色
     void getRgbColor(QString imag);
@@ -166,6 +168,7 @@ protected:
      */
     void printDebugCursorInfo();
     
+    void quitApp();
  private slots:
     void on_quit_clicked();
     // 长按定时器槽函数
@@ -195,6 +198,10 @@ protected:
     void onMetaDataChanged(bool available);
 
     void on_lrcWord_clicked();
+
+    void on_min_clicked();
+
+    void on_max_toggled(bool checked);
 
 private:
     Ui::client *ui;
