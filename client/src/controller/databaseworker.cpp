@@ -4,7 +4,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QSqlDatabase>
-#include <music.h>
+
 
 DatabaseWorker::DatabaseWorker(QObject *parent) : QObject(parent)
 {
@@ -70,14 +70,22 @@ void DatabaseWorker::executeSqlTask(const QString &sql, const QVariant &param)
 {
     qDebug() << "Worker thread received task:" << sql;
 
-    // 获取为这个线程创建的数据库连接
     QSqlDatabase db = QSqlDatabase::database("db_worker_connection");
     QSqlQuery query(db);
     query.prepare(sql);
 
-    // 简单示例，实际应用中参数绑定会更复杂
     if (param.isValid()) {
-        query.bindValue(0, param);
+        // 检查传入的 QVariant 是否能被转换成一个列表
+        if (param.canConvert<QVariantList>()) {
+            QVariantList paramList = param.toList();
+            // 遍历列表，将每个元素依次绑定到占位符上
+            for (int i = 0; i < paramList.size(); ++i) {
+                query.bindValue(i, paramList.at(i));
+            }
+        } else {
+            // 如果不是列表，就当作单个参数处理（为了兼容性）
+            query.bindValue(0, param);
+        }
     }
 
     if (query.exec()) {
@@ -114,7 +122,7 @@ void DatabaseWorker::onCheckMusic(const QString &mid, const QUrl &url)
     if (query.next()) {
         // --- 情况一：音乐已存在于数据库中 ---
         qDebug() << "音乐已存在 (mid):" << mid;
-        emit ifCheckMusic(true, url);
+        emit ifCheckMusic(false, url);
 
         // 逻辑扩展：检查文件路径是否已更改
         QString oldUrl = query.value(0).toString();
@@ -135,7 +143,7 @@ void DatabaseWorker::onCheckMusic(const QString &mid, const QUrl &url)
     } else {
         // --- 情况二：音乐不存在，需要插入新记录 ---
         qDebug() << "新音乐，准备插入数据库 (mid):" << mid;
-        emit ifCheckMusic(false, url);
+        emit ifCheckMusic(true, url);
 
         // 1. 创建Music对象以解析元数据
         Music music(url);
@@ -177,16 +185,35 @@ void DatabaseWorker::getMusicInfo()
     }
 
     QSqlQuery query(db);
-    QString sql = "SELECT murl FROM music_info";
-    query.prepare(sql);
-    if (!query.exec()) {
-        // 如果查询本身就失败了，直接报错
-        qWarning() << "getMusicInfo查询失败:" << query.lastError().text();
-        emit errorOccurred("getMusicInfo查询失败: " + query.lastError().text());
+    QString sql = "SELECT mid, mname, mauthor, malbum, mduration, murl, mlike, mhistory FROM music_info";
+    
+    if (!query.exec(sql)) {
+        qWarning() << "getMusicInfo 查询失败:" << query.lastError().text();
+        emit errorOccurred("查询音乐列表失败: " + query.lastError().text());
         return;
     }
+
+    qDebug() << "开始从数据库加载音乐列表...";
+
+    // 遍历查询结果的每一行
     while (query.next()) {
-        QUrl url = query.value(0).toUrl();
-        emit initMusicInfo(url);
+        // 创建一个空的 Music 对象，我们将手动填充它的数据
+        Music music;
+
+        // 从查询结果中，按列名或索引获取数据，并设置到 music 对象中
+        // 使用列名 (如 query.value("mid")) 更健壮，不易因表结构顺序改变而出错
+        music.setMusicId(query.value("mid").toString()); // 假设你有 setMusicId
+        music.setMusicName(query.value("mname").toString());
+        music.setMusicAuthor(query.value("mauthor").toString());
+        music.setMusicAlbum(query.value("malbum").toString());
+        music.setMusicDuration(query.value("mduration").toLongLong());
+        music.setMusicUrl(QUrl(query.value("murl").toString()));
+        music.setMusicLike(query.value("mlike").toBool());
+        music.setMusicHistory(query.value("mhistory").toBool());
+        
+        // 数据填充完毕后，通过信号将这个完整的 Music 对象发送出去
+        emit initMusicInfo(music);
     }
+    
+    qDebug() << "音乐列表加载完成。";
 }

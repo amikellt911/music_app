@@ -24,10 +24,13 @@ public:
      * @param urls 要添加的音乐文件URL列表
      */
     void addMusicByUrl(const QList<QUrl>& urls);
+    void addMusic(const Music &music);
     /**
      * @brief 获取当前音乐列表
      * @return 返回音乐列表的const引用
      */
+
+    //void addMusicByUrls(const QList<QUrl>& urls);
     const QVector<Music>& getMusicList() const;
 
     /**
@@ -72,6 +75,8 @@ signals:
     void musicListLikeUpdatedDb(const QString& id, bool like);
 
     void checkMusics(const QString &mid,const QUrl &url);
+
+    void initHistoryUi(const QUrl &url);
 public slots:
     //因为如果不存在，那么还是要添加，那么还是需要url来初始化music
     void onCheckMusic(bool hasNewMusic,const QUrl &url);

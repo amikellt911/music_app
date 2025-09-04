@@ -36,9 +36,9 @@ public slots:
     void onDbTaskFinished(bool success, const QString &result);
     void onErrorOccurred(const QString &error);
 
-    void oncheckMusics(const QString &mid,const QUrl &url);
+    // void oncheckMusics(const QString &mid,const QUrl &url);
 
-    void onmusicListLikeUpdated(const QString& id, bool like);
+    // void onmusicListLikeUpdated(const QString& id, bool like);
 
 public:
     client(QWidget *parent = nullptr);

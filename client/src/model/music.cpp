@@ -197,3 +197,8 @@ QString Music::getFileMd5(const QString &filePath)
 
     return QString();
 }
+
+void Music::setMusicId(const QString &id)
+{
+    m_id = id;
+}

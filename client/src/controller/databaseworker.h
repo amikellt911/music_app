@@ -3,7 +3,7 @@
 #include <QObject>
 #include <QString>
 #include <QVariant> // 可以用来传递各种类型的数据
-
+#include <music.h>
 class DatabaseWorker : public QObject
 {
     Q_OBJECT
@@ -23,7 +23,7 @@ signals:
     void taskFinished(bool success, const QString &result);
     void errorOccurred(const QString &error);
     void ifCheckMusic(bool hasNewMusic,const QUrl &url);
-    void initMusicInfo(const QUrl &url);
+    void initMusicInfo(const Music &music);
 private:
     // // 数据库连接应该属于这个 Worker，并在其所在线程中创建和使用
     // QSqlDatabase db;

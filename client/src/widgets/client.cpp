@@ -71,9 +71,15 @@ client::client(QWidget *parent)
         QString sql="update music_info set mlike=? where mid=?";
         emit startSqlTask(sql,QVariantList{like,id});
     });
-    connect(m_dbWorker,&DatabaseWorker::initMusicInfo,this,[=](const QUrl &url)
+    connect(m_dbWorker,&DatabaseWorker::initMusicInfo,this,[=](const Music &music)
     {
-        musicList->addMusicByUrl(QList<QUrl>{url});
+        musicList->addMusic(music);
+    });
+    connect(musicList.get(),&MusicList::initHistoryUi,this,[=](const QUrl &url)
+    {
+        recordRecentPlay(url);
+        // 发送信号通知RecentPage更新显示
+        emit recentPlayHistoryUpdated(url);
     });
     // 4. 启动线程
     m_dbThread->start();
@@ -994,13 +1000,13 @@ void client::on_lrcWord_clicked()
     lrcAnimation->start();
 }
 
-void onDbTaskFinished(bool success, const QString &result)
+void client::onDbTaskFinished(bool success, const QString &result)
 {
     if(!success){
         qDebug() << "数据库操作失败..."<<result;
     }
 }
-void onErrorOccurred(const QString &error)
+void client::onErrorOccurred(const QString &error)
 {
     QMessageBox::critical(nullptr, "错误", error);
 }

@@ -27,6 +27,23 @@ void MusicList::addMusicByUrl(const QList<QUrl>& urls)
 
 }
 
+void MusicList::addMusic(const Music &music)
+{
+
+
+    musicList.push_back(music);
+    emit musicListUpdated();
+    if(music.getMusicHistory())
+    {
+        emit initHistoryUi(music.getMusicUrl());
+    }
+    if(music.getMusicLike())
+    {
+        emit musicListLikeUpdated(music.getMusicId(),true);
+    }
+
+}
+
 
 void MusicList::onCheckMusic(bool hasNewMusic,const QUrl &url)
 {

@@ -8,6 +8,7 @@ public:
     Music();
     Music(QUrl url, bool parseMetaData = true);  // 添加参数控制是否立即解析元数据
     //set方法
+    void setMusicId(const QString &id);
     void setMusicName(const QString &name);
     void setMusicAuthor(const QString &author);
     void setMusicAlbum(const QString &album);
