@@ -74,3 +74,5 @@ Thumbs.db
 build/
 build-client-mingw_1310-Debug/
 .vscode/
+
+*.zip

@@ -76,14 +76,18 @@ set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/src/ui)
 
 find_package(Qt5 COMPONENTS Widgets MULTIMEDIA SQL NetWork REQUIRED)
 
-  add_executable(client
+  add_executable(client WIN32  
   main.cpp
   ${PROJECT_SOURCES}
   ${PROJECT_HEADERS}
   ${PROJECT_FORMS}
   ${PROJECT_RESOURCES}
   )
-
+  # 这会为我们的可执行文件添加编译定义
+  target_compile_definitions(client PRIVATE
+    # 使用生成器表达式，让这个定义只在 Release 模式下生效
+    $<$<CONFIG:Release>:QT_NO_DEBUG_OUTPUT>
+)
   target_include_directories(client PRIVATE
   "${PROJECT_SOURCE_DIR}/src/widgets"
   "${PROJECT_SOURCE_DIR}/src/model"
