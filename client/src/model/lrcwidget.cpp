@@ -76,6 +76,15 @@ bool LrcWidget::parseLrcFile()
     return true;
 }
 
+void LrcWidget::setTitle(const QString &title)
+{
+    ui->title->setText(title);
+}
+void LrcWidget::setAuthor(const QString &author)
+{
+    ui->author->setText(author);
+}
+
 void LrcWidget::positionChanged(qint64 position)
 {
     if(!lrcAvailable)

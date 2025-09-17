@@ -25,6 +25,8 @@ public:
     void setLrcUrl(const QString &url,bool available);
     bool parseLrcFile();
     void positionChanged(qint64 position);
+    void setAuthor(const QString &author);
+    void setTitle(const QString &title);
 private slots:
     void on_hideBtn_clicked();
 

@@ -1026,6 +1026,8 @@ void client::onMetaDataChanged(bool available)
         qDebug() << "歌词文件不存在..."<<lrcFilePath;
     }
     lrcPage->parseLrcFile();
+    lrcPage->setTitle(title);
+    lrcPage->setAuthor(artist);
 }
 void client::on_lrcWord_clicked()
 {    
